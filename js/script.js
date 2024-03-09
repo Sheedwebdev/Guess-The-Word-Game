@@ -9,9 +9,10 @@ const responseMessage = document.querySelector(".message"); // step7: Declare a 
 const playAgainButton = document.querySelector(".play-again"); // step8: Declare a variable to target the hidden play again button
 
 let word = "magnolia"; // step8: Declare a variable to define the word to be guessed
-const guessedLetters = [];
+let guessedLetters = [];
 let remainingGuesses = 8;
 
+// Part10: Create an asynchronous function to randomly pick from a list of 800 words 
 const getWord = async function () {
   const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
   const words = await retrieve.text();
@@ -119,6 +120,7 @@ const countRemaining = function (capturedInput) {
 
   if (remainingGuesses === 0) {
     responseMessage.innerHTML = `The game is over.  The word is <span class="highlight">${word}</span>.  Try to play the game again!`; 
+    startOver();
   } else if (remainingGuesses === 1) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
   } else {
@@ -132,10 +134,34 @@ const won = function () { //step49: Create a function expression that checks if 
   if (word.toUpperCase() === progress.innerText) { //step50: Check if the word to be guessed is the same as the word in progress
     responseMessage.classList.add("win"); //step51: If it is the same, then add the win class to the paragraph that shows the response message
     responseMessage.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`; //step52: Also, change the content of the response message paragraph to a congratulatios message 
+    startOver();
   }
 };
 
-// Part10: 
+// Part11: Create a function to hide and show elements
+const startOver = function () {
+  guessButton.classList.add("hide");
+  remaining.classList.add("hide");
+  guess.classList.add("hide");
+  playAgainButton.classList.remove("hide");
+};
+
+// Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function (e)  { // step16: Apply an event listener to the guess button
+  e.preventDefault(); // step17: Prevent the form default action of reloading the page when the user clicks the button
+  responseMessage.classList.remove("win");
+  responseMessage.innerText = ""; //Clear the previous response message everytime the player clicks the guess button
+  guess.innerText = "";
+  remainingGuesses = 8;
+  guessedLetters = [];
+  remainingSpan.innerText = `${remainingGuesses} guesses`; 
+  guessButton.classList.remove("hide");
+  remaining.classList.remove("hide");
+  guess.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+  getWord();
+});
+ 
 
 
 
