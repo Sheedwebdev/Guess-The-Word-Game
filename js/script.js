@@ -8,22 +8,20 @@ const remainingSpan = document.querySelector(".remaining span"); // step6: Decla
 const responseMessage = document.querySelector(".message"); // step7: Declare a variable to target the paragraph that will display the response message to the user's guess
 const playAgainButton = document.querySelector(".play-again"); // step8: Declare a variable to target the hidden play again button
 let word = "magnolia"; // step9: Declare a variable and assign it the inital word to be guessed
-let guessedLetters = []; // step10:
-let remainingGuesses = 8;  // step11:
+let guessedLetters = []; // step10: Declare a variable for an empty array that will store a player's guesses
+let remainingGuesses = 8;  // step11: Declare a variable for the initial remaining guesses
 
 // Part10: Create an asynchronous function to randomly pick from a list of 800 words 
-const getWord = async function () { //step64:
-  const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); //step65:
-  const words = await retrieve.text(); //step66:
-  console.log(words);//step67:
-  const wordArray = words.split("\n"); //step68:
-  const randomWord = Math.floor(Math.random() * wordArray.length); //step69:
-  word = wordArray[randomWord].trim(); //step70:
-
-  update(word);
+const getWord = async function () { //step80:
+  const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); //step81:
+  const words = await retrieve.text(); //step82:
+  console.log(words); //step83:
+  const wordArray = words.split("\n"); //step84:
+  const randomWord = Math.floor(Math.random() * wordArray.length); //step85:
+  word = wordArray[randomWord].trim(); //step86:
+  update(word); //step87: Execute the placeholders function from Part2
 };
-
-getWord();
+getWord(); //step88:
 
 
 
@@ -55,15 +53,15 @@ guessButton.addEventListener("click", function (e)  { // step19: Apply an event 
 });
 
 // Part4: Create a function to check the player's input
-const inputValidation = function (input) { // step24: Define a funtion expression that validates the captured input value
+const inputValidation = function (input) { // step24: Define a function expression that validates the captured input value
   const acceptedLetter = /[a-zA-Z]/; // step25: Declare a variable that defines the range of accepted letters
-  if (input.length === 0) { // step26: Write a conditional block for all three invalid player input values 
-    responseMessage.innerText = "Please enter a letter."; // step27:
-  } else if (input.length > 1) { // step28:
-    responseMessage.innerText = "Please enter a single letter."; // step29:
-  } else if (!input.match(acceptedLetter)) { // step30:
-    responseMessage.innerText = "Please enter a letter from A to Z."; // step31:
-  } else { // step32:
+  if (input.length === 0) { // step26: Write a conditional statement if the player doesn't enter any letter 
+    responseMessage.innerText = "Please enter a letter."; // step27: Change the text of the response paragraph directing the player to enter a letter
+  } else if (input.length > 1) { // step28: Write a conditional statement if the player guesses more than one letter
+    responseMessage.innerText = "Please enter a single letter."; // step29: Change the text of the response paragraph directing the player to only guess one letter
+  } else if (!input.match(acceptedLetter)) { // step30: Write a conditional statement if the player guesses a character outside of the accepted letter range
+    responseMessage.innerText = "Please enter a letter from A to Z."; // step31: Change the text of the response paragraph directing the player to only enter a letters from A to Z
+  } else { // step32: Return the input if all the above conditions never occur
     return input;
   }
 };
@@ -71,17 +69,17 @@ const inputValidation = function (input) { // step24: Define a funtion expressio
 // Part5: Create a function that captures a valid input value and displays a message if that value has already been captured
 const makeGuess = function (capturedInput) { // step35: Define a function expression 
   capturedInput = capturedInput.toUpperCase();  // step36: Change all valid input values to upper case 
-  if (guessedLetters.includes(capturedInput)) {  // step37: Write a condition block visa vis whether the array already includes the captured value 
-    responseMessage.innerText = "You already guessed that letter, silly. Try again." // step38:
-  } else { // step39:
+  if (guessedLetters.includes(capturedInput)) {  // step37: Write a condition statement visa vis whether the array already includes the captured value 
+    responseMessage.innerText = "You already guessed that letter, silly. Try again." // step38: Change the text of the response paragraph informing the player they have already guessed that letter
+  } else { // step39: Push the captured input to the guessedLetters array
     guessedLetters.push(capturedInput);
-    // console.log(guessedLetters);  // step40: When this funciton is ran, check whether valid inputs are pushed to guessedLetters array  
+    // console.log(guessedLetters);  // step40: When this funciton is ran, check whether valid inputs are pushed to the guessedLetters array  
     
-    countRemaining(capturedInput); //
+    countRemaining(capturedInput); //step79: Execute the countRemining function 
     
-    displayedLetters(); // step50:  Display the guessed letters by calling the displayedLetters() function from Part6
+    displayedLetters(); //step50:  Display the guessed letters by calling the displayedLetters() function from Part6
     
-    updatedWord(guessedLetters); // Update the players guess 
+    updatedWord(guessedLetters); //step62: Update the players guess 
   }
 };
 
@@ -97,77 +95,78 @@ const displayedLetters = function () {  // step44: Create a function expression 
 
 // Part7: Create a function that updates the word in progress
 const updatedWord = function (guessedLetters) { //step51:  Create a function expression that displays the word in progress 
-  const wordUpper = word.toUpperCase(); //step39: Change the word to be guessed to upper case
-  const wordArray = wordUpper.split(""); //step40: Split the characters of word to be guessed into an array
-  const displayWord = []; //step41: Create an empty array to push the correct letters to
-  for (const letter of wordArray) { //step42: Loop through each element of the array that represents the word to be guessed
-    if (guessedLetters.includes(letter)) { //step43: Check whether the player's guess matches a letter in the word to be guessed  
-      displayWord.push(letter.toUpperCase()); //step44:  If it does match, then push it to the displayWord array
+  const wordUpper = word.toUpperCase(); //step52: Change the word to be guessed to upper case
+  const wordArray = wordUpper.split(""); //step53: Split the characters of the word to be guessed into an array
+  console.log(wordArray); //step54: Check if the wordArray contains any letters from the guessedLetters array.
+  const displayWord = []; //step55: Create an empty array to push the correct letters to
+  for (const letter of wordArray) { //step56: Loop through each element of the array that represents the word to be guessed
+    if (guessedLetters.includes(letter)) { //step57: Check whether the player's guess matches a letter in the word to be guessed  
+      displayWord.push(letter.toUpperCase()); //step58:  If it does match, then push it to the displayWord array
     } else {
-      displayWord.push("●"); //step45: If it doesn't match then push a "●" to the displayWord array
+      displayWord.push("●"); //step59: If it doesn't match then push a "●" to the displayWord array
     }
   }
-  console.log(displayWord); //step46: Check to see the player's correct guesses are shown in the displayWord array
-  progress.innerText = displayWord.join(""); //step47: Change the text of the paragraph that shows the word in progress
+  console.log(displayWord); //step60: Check to see the player's correct guesses are shown in the displayWord array
+  progress.innerText = displayWord.join(""); //step61: Change the text of the paragraph that shows the word in progress
   
-  won(); //step53: Let the player know whether they have won
+  won(); //step67: Let the player know whether they have won
 };
 
 
 // Part9: Create a function to count guesses remaining
-const countRemaining = function (capturedInput) {  //step53:
-  const upperWord = word.toUpperCase();//step54:
-  if (!upperWord.includes(capturedInput)) { //step55:
-    responseMessage.innerText = `The letter ${capturedInput} is not in the word.`; //step56:
-    remainingGuesses -= 1; //step57:
-  } else { //step58:
+const countRemaining = function (capturedInput) {  //step68:
+  const upperWord = word.toUpperCase();//step69:
+  if (!upperWord.includes(capturedInput)) { //step70:
+    responseMessage.innerText = `The letter ${capturedInput} is not in the word.`; //step71:
+    remainingGuesses -= 1; //step72:
+  } else { //step73:
     responseMessage.innerText = `Great guess! The letter ${capturedInput} is correct!`;
   }
-  if (remainingGuesses === 0) { //step59:
-    responseMessage.innerHTML = `The game is over.  The word is <span class="highlight">${word}</span>.  Try to play the game again!`; //step60:
+  if (remainingGuesses === 0) { //step74:
+    responseMessage.innerHTML = `The game is over.  The word is <span class="highlight">${word}</span>.  Try to play the game again!`; //step75:
     
-    startOver();
+    startOver(); //step95: Execute the startOver function when the player looses
 
-  } else if (remainingGuesses === 1) { //step61:
-    remainingSpan.innerText = `${remainingGuesses} guess`; //step62:
-  } else { //step63:
+  } else if (remainingGuesses === 1) { //step76:
+    remainingSpan.innerText = `${remainingGuesses} guess`; //step77:
+  } else { //step78:
     remainingSpan.innerText = `${remainingGuesses} guesses`;
   }
 };
 
 
 // Part8: Create a function that determines if the player has won!
-const won = function () { //step49: Create a function expression that checks if the player has won
-  if (word.toUpperCase() === progress.innerText) { //step50: Check if the word to be guessed is the same as the word in progress
-    responseMessage.classList.add("win"); //step51: If it is the same, then add the win class to the paragraph that shows the response message
-    responseMessage.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`; //step52: Also, change the content of the response message paragraph to a congratulatios message 
+const won = function () { //step63: Create a function expression that checks if the player has won
+  if (word.toUpperCase() === progress.innerText) { //step64: Check if the word to be guessed is the same as the word in progress
+    responseMessage.classList.add("win"); //step65: If it is the same, then add the win class to the paragraph that shows the response message
+    responseMessage.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`; //step66: Also, change the content of the response message paragraph to a congratulatios message 
     
-    startOver();
+    startOver(); //step94: Execute the startOver() function when the player wins
   }
 };
 
 // Part11: Create a function to hide and show elements
-const startOver = function () { //step71:
-  guessButton.classList.add("hide"); //step72:
-  remaining.classList.add("hide"); //step73:
-  guess.classList.add("hide"); //step74:
-  playAgainButton.classList.remove("hide"); //step75:
+const startOver = function () { //step89:
+  guessButton.classList.add("hide"); //step90:
+  remaining.classList.add("hide"); //step91:
+  guess.classList.add("hide"); //step92:
+  playAgainButton.classList.remove("hide"); //step93:
 };
 
 // Part12: Add a click event to the play again button
-playAgainButton.addEventListener("click", function (e)  { //step76: Apply an event listener to the play again button
-  e.preventDefault(); //step77: Prevent the form default action of reloading the page when the user clicks the button
-  responseMessage.classList.remove("win"); //step78:
-  responseMessage.innerText = ""; //step79: Clear the previous response message everytime the player clicks the play again button
-  guess.innerText = ""; //step80:
-  remainingGuesses = 8; //step81:
-  guessedLetters = []; //step82:
-  remainingSpan.innerText = `${remainingGuesses} guesses`; //step83:
-  guessButton.classList.remove("hide"); //step84:
-  remaining.classList.remove("hide"); //step85:
-  guess.classList.remove("hide"); //step86:
-  playAgainButton.classList.add("hide"); //step87:
-  getWord(); //step88:
+playAgainButton.addEventListener("click", function (e)  { //step96: Apply an event listener to the play again button
+  e.preventDefault(); //step97: Prevent the form default action of reloading the page when the user clicks the button
+  responseMessage.classList.remove("win"); //step98:
+  responseMessage.innerText = ""; //step99: Clear the previous response message everytime the player clicks the play again button
+  guess.innerText = ""; //step100:
+  remainingGuesses = 8; //step101:
+  guessedLetters = []; //step102:
+  remainingSpan.innerText = `${remainingGuesses} guesses`; //step103:
+  guessButton.classList.remove("hide"); //step104:
+  remaining.classList.remove("hide"); //step105:
+  guess.classList.remove("hide"); //step106:
+  playAgainButton.classList.add("hide"); //step107:
+  getWord(); //step108:
 });
  
 
