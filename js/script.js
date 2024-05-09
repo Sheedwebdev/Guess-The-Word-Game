@@ -1,4 +1,4 @@
-// Part1: Create global variables (include varibles for selecting all targeted elements on the page)
+// Part1: Create all global variables for your page
 const guess = document.querySelector(".guessed-letters"); // step1: Declare a variable to target the unordered list where the players guess will appear
 const guessButton = document.querySelector(".guess"); // step2: Declare a variable to target the guess button
 const input = document.querySelector(".letter"); // step3: Declare a variable to target the input element
@@ -25,7 +25,7 @@ getWord(); //step88: Execute the getWord() function
 
 
 
-// Part2: Create a function to add placeholders for each letter
+// Part2: Add placeholders for each letter in the word
 const update = function (word) { // step12: Create a function expression using the word to guessed as the parameter
   const updatedLetters = []; // step13: Declare a variable and assign an empty array to it
   for (const letter of word) { // step14: Loop through each letter in the array word 
@@ -40,29 +40,31 @@ update(word); // step18: Call or execute the placeholders function using the wor
 guessButton.addEventListener("click", function (e)  { // step19: Apply an event listener to the guess button
   e.preventDefault(); // step20: Prevent the form default action of reloading the page when the user clicks the button
   const capturedInput = input.value; // step21: Declare a variable to capture the input value
-  // console.log(capturedInput); // step22: Check to see if the input value is being captured
+  console.log(capturedInput); // step22: Check to see if the input value is being captured
   responseMessage.innerText = ""; // step23: Clear the previous response message everytime the player clicks the guess button
 
+  //Extention of Part4
   const goodGuess = inputValidation(capturedInput); // step33: Declare a variable that make sure the player's input is valid by calling the inputValidation funciton from part4 
   console.log(goodGuess);  // step34: Check to see if inputValidation() function is working as expected
   
+  //Extention of Part5
   if (goodGuess) { // step41: Write a conditonal block that determines what to do if input is valid
     makeGuess(capturedInput); // step42: If input is valid, than call the makeGuess function from part5 to make sure the player does not guess the same value more than once
   }
   input.value = ""; // step43: Clear the value each time its been captured
 });
 
-// Part4: Create a function to check the player's input
-const inputValidation = function (input) { // step24: Define a function expression that validates the captured input value
+// Part4: Validate the player's input
+const inputValidation = function (capturedInput) { // step24: Define a function expression that validates the captured input value
   const acceptedLetter = /[a-zA-Z]/; // step25: Declare a variable that defines the range of accepted letters
-  if (input.length === 0) { // step26: Write a conditional statement if the player doesn't enter any letter 
+  if (capturedInput.length === 0) { // step26: Write a conditional statement if the player doesn't enter any letter 
     responseMessage.innerText = "Please enter a letter."; // step27: Change the text of the response paragraph directing the player to enter a letter
-  } else if (input.length > 1) { // step28: Write a conditional statement if the player guesses more than one letter
+  } else if (capturedInput.length > 1) { // step28: Write a conditional statement if the player guesses more than one letter
     responseMessage.innerText = "Please enter a single letter."; // step29: Change the text of the response paragraph directing the player to only guess one letter
-  } else if (!input.match(acceptedLetter)) { // step30: Write a conditional statement if the player guesses a character outside of the accepted letter range
+  } else if (!capturedInput.match(acceptedLetter)) { // step30: Write a conditional statement if the player guesses a character outside of the accepted letter range
     responseMessage.innerText = "Please enter a letter from A to Z."; // step31: Change the text of the response paragraph directing the player to only enter a letters from A to Z
   } else { // step32: Return the input if all the above conditions never occur
-    return input;
+    return capturedInput;
   }
 };
 
@@ -73,10 +75,10 @@ const makeGuess = function (capturedInput) { // step35: Define a function expres
     responseMessage.innerText = "You already guessed that letter, silly. Try again." // step38: Change the text of the response paragraph informing the player they have already guessed that letter
   } else { // step39: Push the captured input to the guessedLetters array
     guessedLetters.push(capturedInput);
-    // console.log(guessedLetters);  // step40: When this funciton is ran, check whether valid inputs are pushed to the guessedLetters array  
+    console.log(guessedLetters);  // step40: When this funciton is ran, check whether valid inputs are pushed to the guessedLetters array  
     
     countRemaining(capturedInput); //step79: Execute the countRemining function 
-    
+
     displayedLetters(); //step50:  Display the guessed letters by calling the displayedLetters() function from Part6
     
     updatedWord(guessedLetters); //step62: Update the players guess 
@@ -86,6 +88,7 @@ const makeGuess = function (capturedInput) { // step35: Define a function expres
 // Part6: Create a function that displays the guessed letters
 const displayedLetters = function () {  // step44: Create a function expression for displaying the player's guesses 
   guess.innerHTML = "";  // step45: Clear the unordered list where the player's guess will appear 
+  console.log(guess);
   for (const letter of guessedLetters) {  // step46: Loop through the elements(letters) of the guessedLetters array 
     const li = document.createElement("li");  // step47: Create a li element for each letter that is looped through 
     li.innerText = letter;  // step48:  Change the text of the li element to the player's guess
@@ -158,6 +161,7 @@ playAgainButton.addEventListener("click", function (e)  { //step96: Apply an eve
   e.preventDefault(); //step97: Prevent the form default action of reloading the page when the user clicks the button
   responseMessage.classList.remove("win"); //step98:  Make the win class disappear from the response message
   responseMessage.innerText = ""; //step99: Clear the response message 
+  guess.innerHTML = ""; //step100 Clear all list items (guesses) from the unorder list container
   remainingGuesses = 8; //step101: Reassign the remaining guesses back to the initial amount
   guessedLetters = []; //step102: Reassign the guessed letters variable back to an empty array
   remainingSpan.innerText = `${remainingGuesses} guesses`; //step103: Let the player know how many guesses that have remaining
