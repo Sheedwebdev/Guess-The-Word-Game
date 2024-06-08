@@ -11,19 +11,6 @@ let word = "magnolia"; // step9: Declare a variable and assign it the inital wor
 let guessedLetters = []; // step10: Declare a variable for an empty array that will store a player's guesses
 let remainingGuesses = 8;  // step11: Declare a variable for the initial remaining guesses
 
-// Part10: Create an asynchronous function to randomly pick from a list of 800 words 
-const getWord = async function () { //step80: Write an asynchronous function 
-  const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); //step81: Fetch the data from this address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt 
-  const words = await retrieve.text(); //step82: Parse the text data into js data
-  console.log(words); //step83: Log out the parse data to see what it looks like
-  const wordArray = words.split("\n"); //step84: Use the fetched data to create an array of words 
-  const randomWord = Math.floor(Math.random() * wordArray.length); //step85: Grab a random word from the array of words
-  word = wordArray[randomWord].trim(); //step86:  Reassign the random word to the previously declared word variable (Make sure to eliminate space around the word!)
-  update(word); //step87: Execute the placeholders function from Part2
-};
-getWord(); //step88: Execute the getWord() function
-
-
 
 // Part2: Add placeholders for each letter in the word
 const update = function (word) { // step12: Create a function expression using the word to guessed as the parameter
@@ -36,7 +23,7 @@ const update = function (word) { // step12: Create a function expression using t
 };
 update(word); // step18: Call or execute the placeholders function using the word as the argument
 
-// Part3: Apply an event listener to the guess button
+// Part3: Capture the input when the guess button is clicked
 guessButton.addEventListener("click", function (e)  { // step19: Apply an event listener to the guess button
   e.preventDefault(); // step20: Prevent the form default action of reloading the page when the user clicks the button
   const capturedInput = input.value; // step21: Declare a variable to capture the input value
@@ -68,24 +55,27 @@ const inputValidation = function (capturedInput) { // step24: Define a function 
   }
 };
 
-// Part5: Create a function that captures a valid input value and displays a message if that value has already been captured
+// Part5: Make a guess
 const makeGuess = function (capturedInput) { // step35: Define a function expression 
   capturedInput = capturedInput.toUpperCase();  // step36: Change all valid input values to upper case 
   if (guessedLetters.includes(capturedInput)) {  // step37: Write a condition statement visa vis whether the array already includes the captured value 
-    responseMessage.innerText = "You already guessed that letter, silly. Try again." // step38: Change the text of the response paragraph informing the player they have already guessed that letter
+    responseMessage.innerText = "You already guessed that letter, silly. Try again."; // step38: Change the text of the response paragraph informing the player they have already guessed that letter
   } else { // step39: Push the captured input to the guessedLetters array
     guessedLetters.push(capturedInput);
     console.log(guessedLetters);  // step40: When this funciton is ran, check whether valid inputs are pushed to the guessedLetters array  
     
+    //Extention of Part8
     countRemaining(capturedInput); //step79: Execute the countRemining function 
 
+    //Extention of Part6
     displayedLetters(); //step50:  Display the guessed letters by calling the displayedLetters() function from Part6
     
+    //Extention of Part7
     updatedWord(guessedLetters); //step62: Update the players guess 
   }
 };
 
-// Part6: Create a function that displays the guessed letters
+// Part6: Display the guessed letters
 const displayedLetters = function () {  // step44: Create a function expression for displaying the player's guesses 
   guess.innerHTML = "";  // step45: Clear the unordered list where the player's guess will appear 
   console.log(guess);
@@ -96,7 +86,7 @@ const displayedLetters = function () {  // step44: Create a function expression 
   }
 };
 
-// Part7: Create a function that updates the word in progress
+// Part7: Update the word in progress
 const updatedWord = function (guessedLetters) { //step51:  Create a function expression that displays the word in progress 
   const wordUpper = word.toUpperCase(); //step52: Change the word to be guessed to upper case
   const wordArray = wordUpper.split(""); //step53: Split the characters of the word to be guessed into an array
@@ -111,12 +101,13 @@ const updatedWord = function (guessedLetters) { //step51:  Create a function exp
   }
   console.log(displayWord); //step60: Check to see the player's correct guesses are shown in the displayWord array
   progress.innerText = displayWord.join(""); //step61: Change the text of the paragraph that shows the word in progress
-  
+
+  //Extention of Part9
   won(); //step67: Let the player know whether they have won
 };
 
 
-// Part9: Create a function to count guesses remaining
+// Part8: Count guesses remaining
 const countRemaining = function (capturedInput) {  //step68: Create a function for counting the remaining guesses
   const upperWord = word.toUpperCase();//step69: Change the word to be guessed to uppercase
   if (!upperWord.includes(capturedInput)) { //step70: Write a conditional statement stating if the word does not include the player's guess
@@ -128,7 +119,7 @@ const countRemaining = function (capturedInput) {  //step68: Create a function f
   if (remainingGuesses === 0) { //step74: Write a conditional statement stating if there are no more remaining guesses
     responseMessage.innerHTML = `The game is over.  The word is <span class="highlight">${word}</span>.  Try to play the game again!`; //step75: Let the player know the game is over and to try to play again
     
-    startOver(); //step95: Execute the startOver function when the player looses
+    startOver(); //step95: Execute the startOver function from Part11 when the player looses
 
   } else if (remainingGuesses === 1) { //step76: Write a condtitional statement stating if there was only one guess remaining
     remainingSpan.innerText = `${remainingGuesses} guess`; //step77: In the remaining span, let the player know they have one guess left
@@ -138,17 +129,30 @@ const countRemaining = function (capturedInput) {  //step68: Create a function f
 };
 
 
-// Part8: Create a function that determines if the player has won!
+// Part9: Let the player know that they won!
 const won = function () { //step63: Create a function expression that checks if the player has won
   if (word.toUpperCase() === progress.innerText) { //step64: Check if the word to be guessed is the same as the word in progress
     responseMessage.classList.add("win"); //step65: If it is the same, then add the win class to the paragraph that shows the response message
     responseMessage.innerHTML = `<p class="highlight">You guessed the correct word! Congrats!</p>`; //step66: Also, change the content of the response message paragraph to a congratulatios message 
     
-    startOver(); //step94: Execute the startOver() function when the player wins
+    startOver(); //step94: Execute the startOver() function from Part11 when the player wins
   }
 };
 
-// Part11: Create a function to hide and show elements
+// Part10: Randomly pick from a word from a list of 800 words 
+const getWord = async function () { //step80: Write an asynchronous function 
+  const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); //step81: Fetch the data from this address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt 
+  const words = await retrieve.text(); //step82: Parse the text data into js data
+  console.log(words); //step83: Log out the parse data to see what it looks like
+  const wordArray = words.split("\n"); //step84: Use the fetched data to create an array of words 
+  const randomWord = Math.floor(Math.random() * wordArray.length); //step85: Grab a random word from the array of words
+  word = wordArray[randomWord].trim(); //step86:  Reassign the random word to the previously declared word variable (Make sure to eliminate space around the word!)
+  update(word); //step87: Execute the placeholders function from Part2
+};
+getWord(); //step88: Execute the getWord() function
+
+
+// Part11: Give the player the option to start over and play again
 const startOver = function () { //step89: Declare a variable for a function
   guessButton.classList.add("hide"); //step90: Hide the guess button
   remaining.classList.add("hide"); //step91: Hide the number of guesses remaining
@@ -169,6 +173,7 @@ playAgainButton.addEventListener("click", function (e)  { //step96: Apply an eve
   remaining.classList.remove("hide"); //step105: Make the number of guesses remaining reappear again
   guess.classList.remove("hide"); //step106: Allow the player's guesses to appear again
   playAgainButton.classList.add("hide"); //step107: Make the play again button disappear
+  //Extension of Part10
   getWord(); //step108: Execute the getWord() function from Part10 to fetch a new word
 });
  
