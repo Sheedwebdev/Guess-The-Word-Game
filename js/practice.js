@@ -109,6 +109,9 @@ const updatedProgress = function (guessedLetters) {
     }
   }
   progress.innerText = displayWord.join("");
+  
+  //Extention of Part9
+  winner();
 };
 
 
@@ -133,7 +136,13 @@ const remainingGuesses = function (capturedInput) {
 
 
 // Part9: Let the player know that they won!
-
+const winner = function () {
+  if (word.toUpperCase() === progress.innerText) {
+    responseMessage.classList.add("win");
+    responseMessage.innerHTML = `<p class="highlight">${word} is the correct word!!! Impressive lexicon you have!!!</p>`;
+    console.log(responseMessage);
+  }
+};
 
 
 // Part10: Randomly pick from a word from a list of 800 words 
