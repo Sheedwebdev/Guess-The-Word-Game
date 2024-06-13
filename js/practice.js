@@ -121,9 +121,9 @@ const updatedProgress = function (guessedLetters) {
 const remainingGuesses = function (capturedInput) {
   const upperWord = word.toUpperCase();
   const upperGuess = capturedInput.toUpperCase();
-  console.log(upperWord);
-  console.log(capturedInput);
-  console.log(upperGuess)
+  // console.log(upperWord);
+  // console.log(capturedInput);
+  // console.log(upperGuess)
   if (!upperWord.includes(upperGuess)) {
     responseMessage.innerText = `The letter ${upperGuess} is not in the word.`;
     countRemaining -= 1;
@@ -132,6 +132,8 @@ const remainingGuesses = function (capturedInput) {
   }
   if (countRemaining === 0) {
     responseMessage.innerHTML = `The game is over! The word is <span class="highlight">${upperWord}</span>.`;
+    // Extention of Part11
+    startOverOption();
   } else if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else {
@@ -147,19 +149,37 @@ const winner = function () {
   if (word.toUpperCase() === progress.innerText) {
     responseMessage.classList.add("win");
     responseMessage.innerHTML = `<p class="highlight">${upperWord} is the correct word!!! Impressive lexicon you have!!!</p>`;
-    console.log(responseMessage);
+    // console.log(responseMessage);
+     //Extention of Part11
+  startOverOption();
   }
 };
 
 
 // Part10: Randomly pick from a word from a list of 800 words 
+// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
+const randomWord = async function () {
+  const retriveData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const words = await retriveData.text();
+  // console.log(retriveData);
+  // console.log(words);
+  const arrayOfWords = words.split("\n");
+  // console.log(arrayOfWords);
+  const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
+  // console.log(randomIndex);
+  const word = arrayOfWords[randomIndex];
+  console.log(word);
 
-
-
-
+  //Extention of Part2
+  placeholders(word);
+};
+randomWord();
 // Part11: Give the player the option to start over and play again
-
-
-
+const startOverOption = function () {
+  playAgainButton.classList.remove("hide");
+  guessButton.classList.add("hide");
+  guess.classList.add("hide");
+  remaining.classList.add("hide");
+};
 
 // Part12: Add a click event to the play again button
