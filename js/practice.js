@@ -69,14 +69,16 @@ const makeValidGuess = function (capturedInput) {
     guessedLetters.push(upperGuess);
     // console.log(guessedLetters);
 
+    //Extention of Part8 (Must be called before Part6 and Part7 since they are dependent on this function)
+    remainingGuesses(capturedInput);
+
     //Extention of Part6
     displayGuesses();
 
     //Extention of Part7
     updatedProgress(guessedLetters);
 
-    //Extention of Part8
-    remainingGuesses(capturedInput);
+    
   }
 };
 
@@ -115,17 +117,21 @@ const updatedProgress = function (guessedLetters) {
 };
 
 
-// Part8: Count guesses remaining
+// Part8: Count the guesses remaining
 const remainingGuesses = function (capturedInput) {
   const upperWord = word.toUpperCase();
-  if (!upperWord.includes(capturedInput)) {
-    responseMessage.innerText = `The letter ${capturedInput} is not in the word.`;
+  const upperGuess = capturedInput.toUpperCase();
+  console.log(upperWord);
+  console.log(capturedInput);
+  console.log(upperGuess)
+  if (!upperWord.includes(upperGuess)) {
+    responseMessage.innerText = `The letter ${upperGuess} is not in the word.`;
     countRemaining -= 1;
   } else {
-    responseMessage.innerText = `Great Job!!! The letter ${capturedInput} is in the word!!!`;
+    responseMessage.innerText = `Great Job!!! The letter ${upperGuess} is in the word!!!`;
   }
   if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The word is <span class="highlight">${word}</span>.`;
+    responseMessage.innerHTML = `The game is over! The word is <span class="highlight">${upperWord}</span>.`;
   } else if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else {
@@ -137,9 +143,10 @@ const remainingGuesses = function (capturedInput) {
 
 // Part9: Let the player know that they won!
 const winner = function () {
+  const upperWord = word.toUpperCase();
   if (word.toUpperCase() === progress.innerText) {
     responseMessage.classList.add("win");
-    responseMessage.innerHTML = `<p class="highlight">${word} is the correct word!!! Impressive lexicon you have!!!</p>`;
+    responseMessage.innerHTML = `<p class="highlight">${upperWord} is the correct word!!! Impressive lexicon you have!!!</p>`;
     console.log(responseMessage);
   }
 };
