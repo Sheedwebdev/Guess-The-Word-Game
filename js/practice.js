@@ -16,6 +16,7 @@ let countRemaining = 8;
 const placeholders = function (word) {
   const placeholdersArray = [];
   for (const letter of word) {
+    // console.log(letter);
     placeholdersArray.push("*");
   }
   // console.log(placeholdersArray);
@@ -167,7 +168,7 @@ const randomWord = async function () {
   // console.log(arrayOfWords);
   const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
   // console.log(randomIndex);
-  const word = arrayOfWords[randomIndex];
+  const word = arrayOfWords[randomIndex].trim();
   console.log(word);
 
   //Extention of Part2
@@ -180,6 +181,21 @@ const startOverOption = function () {
   guessButton.classList.add("hide");
   guess.classList.add("hide");
   remaining.classList.add("hide");
+  console.log(startOverOption);
 };
 
+
 // Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function (e) {
+  e.preventDefault();
+  playAgainButton.classList.add("hide");
+  guessButton.classList.remove("hide");
+  remaining.classList.remove("hide")
+  responseMessage.classList.remove("win");
+  remainingSpan.innerText = `${countRemaining} guesses`;
+  responseMessage.innerText = "";
+  guess.innerHTML = "";
+  guessedLetters = [];
+  countRemaining = 8;
+  randomWord();
+});
