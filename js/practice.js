@@ -12,6 +12,26 @@ let word = "magnolia";
 let guessedLetters = [];
 let countRemaining = 8;
 
+
+// Part10: Randomly pick from a word from a list of 800 words 
+// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
+const randomWord = async function () {
+  const retriveData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const words = await retriveData.text();
+  // console.log(retriveData);
+  // console.log(words);
+  const arrayOfWords = words.split("\n");
+  // console.log(arrayOfWords);
+  const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
+  // console.log(randomIndex);
+  word = arrayOfWords[randomIndex].trim();
+  console.log(word);
+
+  //Extention of Part2
+  placeholders(word);
+};
+randomWord();
+
 // Part2: Add placeholders for each letter in the word
 const placeholders = function (word) {
   const placeholdersArray = [];
@@ -157,31 +177,16 @@ const winner = function () {
 };
 
 
-// Part10: Randomly pick from a word from a list of 800 words 
-// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
-const randomWord = async function () {
-  const retriveData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
-  const words = await retriveData.text();
-  // console.log(retriveData);
-  // console.log(words);
-  const arrayOfWords = words.split("\n");
-  // console.log(arrayOfWords);
-  const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
-  // console.log(randomIndex);
-  const word = arrayOfWords[randomIndex].trim();
-  console.log(word);
 
-  //Extention of Part2
-  placeholders(word);
-};
-randomWord();
+
+
 // Part11: Give the player the option to start over and play again
 const startOverOption = function () {
   playAgainButton.classList.remove("hide");
   guessButton.classList.add("hide");
   guess.classList.add("hide");
   remaining.classList.add("hide");
-  console.log(startOverOption);
+  // console.log(startOverOption);
 };
 
 
