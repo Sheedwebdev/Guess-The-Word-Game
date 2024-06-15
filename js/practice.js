@@ -195,12 +195,14 @@ playAgainButton.addEventListener("click", function (e) {
   e.preventDefault();
   playAgainButton.classList.add("hide");
   guessButton.classList.remove("hide");
-  remaining.classList.remove("hide")
-  responseMessage.classList.remove("win");
+  countRemaining = 8;
   remainingSpan.innerText = `${countRemaining} guesses`;
+  remaining.classList.remove("hide")
   responseMessage.innerText = "";
+  responseMessage.classList.remove("win");
   guess.innerHTML = "";
   guessedLetters = [];
-  countRemaining = 8;
+  
+  //Extention of Part10
   randomWord();
 });
