@@ -11,11 +11,15 @@ body {
   font-style: normal;
   font-size: 20px;
   line-height: 150%;
-  background-color: #dff6f6;
+  /* background-color: #dff6f6; */
+  /* Dark Mode Background Color */
+  background-color: #323641;
   background-image: url("../img/bg.png");
   background-size: 800px;
   background-repeat: repeat;
-  color: #305050;
+  /* color: #305050; */
+  /* Dark Mode Font Color */
+  color: #f5b880;
 }
 
 .logo {
@@ -62,7 +66,9 @@ h1 {
 
 .word-in-progress {
   letter-spacing: 15px;
-  color: #28bdbd;
+  /* color: #28bdbd; */
+  /* Dark Mode Font Colors */
+  color: #f5b880;
   font-size: 30px;
 }
 
