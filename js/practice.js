@@ -29,19 +29,32 @@ const placeholders = function (word) {
 };
 placeholders(word);
 
+
 // Part3: Capture the input when the guess button is clicked
 guessButton.addEventListener("click", function (e) {
   e.preventDefault();
-//   const capturedInput = input.value;
-//   console.log(capturedInput);
-  input.value;
-  console.log(input.value);
+  const capturedInput = input.value;
+  console.log(capturedInput);
   input.value = "";
-  
+
+  //Extention of Part4
+  inputValidation(capturedInput);
 });
+
+
 // Part4: Validate the player's input
-
-
+const inputValidation = function (capturedInput) {
+    const acceptedLetter = /[a-zA-Z]/;
+    if (capturedInput.length === 0) {
+    responseMessage.innerText = "You must make a guess first!"; 
+  } else if (capturedInput.length > 1) {
+    responseMessage.innerText = "Hold on speedy gonzalez, only one guess at a time!"; 
+  } else if (!capturedInput.match(acceptedLetter)) {
+    responseMessage.innerText = "Only enter letters from A to Z!"
+  } else {
+    return capturedInput;
+  }
+};
 // Part5: What happens when the player makes a valid input/guess?
 
 
