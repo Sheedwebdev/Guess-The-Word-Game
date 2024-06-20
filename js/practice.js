@@ -201,6 +201,7 @@ playAgainButton.addEventListener("click", function (e) {
   responseMessage.innerText = "";
   responseMessage.classList.remove("win");
   guess.innerHTML = "";
+  guess.classList.remove("hide");
   guessedLetters = [];
   
   //Extention of Part10
