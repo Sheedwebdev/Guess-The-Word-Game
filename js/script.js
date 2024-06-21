@@ -16,7 +16,7 @@ let remainingGuesses = 8;  // step11: Declare a variable for the initial remaini
 const update = function (word) { // step12: Create a function expression using the word to guessed as the parameter
   const updatedLetters = []; // step13: Declare a variable and assign an empty array to it
   for (const letter of word) { // step14: Loop through each letter in the array word 
-    console.log(letter);  // step15: Check whether each element (letter) was looped through 
+    // console.log(letter);  // step15: Check whether each element (letter) was looped through 
     updatedLetters.push("●"); // step16: Push a "●" into the empty array after each loop/iteration (Since there are 8 letters in magnolio, there should be 8 "●")
   }
   progress.innerText = updatedLetters.join(""); // step17: Set the inner text of the word in progress paragraph to array of "●" all  joined together like a string
@@ -27,12 +27,12 @@ update(word); // step18: Call or execute the placeholders function using the wor
 guessButton.addEventListener("click", function (e)  { // step19: Apply an event listener to the guess button
   e.preventDefault(); // step20: Prevent the form default action of reloading the page when the user clicks the button
   const capturedInput = input.value; // step21: Declare a variable to capture the input value
-  console.log(capturedInput); // step22: Check to see if the input value is being captured
+  // console.log(capturedInput); // step22: Check to see if the input value is being captured
   responseMessage.innerText = ""; // step23: Clear the previous response message everytime the player clicks the guess button
 
   //Extention of Part4
   const goodGuess = inputValidation(capturedInput); // step33: Declare a variable that make sure the player's input is valid by calling the inputValidation funciton from part4 
-  console.log(goodGuess);  // step34: Check to see if inputValidation() function is working as expected
+  // console.log(goodGuess);  // step34: Check to see if inputValidation() function is working as expected
   
   //Extention of Part5
   if (goodGuess) { // step41: Write a conditonal block that determines what to do if input is valid
@@ -78,7 +78,7 @@ const makeGuess = function (capturedInput) { // step35: Define a function expres
 // Part6: Display the guessed letters
 const displayedLetters = function () {  // step44: Create a function expression for displaying the player's guesses 
   guess.innerHTML = "";  // step45: Clear the unordered list where the player's guess will appear 
-  console.log(guess);
+  // console.log(guess);
   for (const letter of guessedLetters) {  // step46: Loop through the elements(letters) of the guessedLetters array 
     const li = document.createElement("li");  // step47: Create a li element for each letter that is looped through 
     li.innerText = letter;  // step48:  Change the text of the li element to the player's guess
@@ -90,7 +90,7 @@ const displayedLetters = function () {  // step44: Create a function expression 
 const updatedWord = function (guessedLetters) { //step51:  Create a function expression that displays the word in progress 
   const wordUpper = word.toUpperCase(); //step52: Change the word to be guessed to upper case
   const wordArray = wordUpper.split(""); //step53: Split the characters of the word to be guessed into an array
-  console.log(wordArray); //step54: Check if the wordArray contains any letters from the guessedLetters array.
+  // console.log(wordArray); //step54: Check if the wordArray contains any letters from the guessedLetters array.
   const displayWord = []; //step55: Create an empty array to push the correct letters to
   for (const letter of wordArray) { //step56: Loop through each element of the array that represents the word to be guessed
     if (guessedLetters.includes(letter)) { //step57: Check whether the player's guess matches a letter in the word to be guessed  
@@ -99,7 +99,7 @@ const updatedWord = function (guessedLetters) { //step51:  Create a function exp
       displayWord.push("●"); //step59: If it doesn't match then push a "●" to the displayWord array
     }
   }
-  console.log(displayWord); //step60: Check to see the player's correct guesses are shown in the displayWord array
+  // console.log(displayWord); //step60: Check to see the player's correct guesses are shown in the displayWord array
   progress.innerText = displayWord.join(""); //step61: Change the text of the paragraph that shows the word in progress
 
   //Extention of Part9
@@ -143,7 +143,7 @@ const won = function () { //step63: Create a function expression that checks if 
 const getWord = async function () { //step80: Write an asynchronous function 
   const retrieve = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"); //step81: Fetch the data from this address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt 
   const words = await retrieve.text(); //step82: Parse the text data into js data
-  console.log(words); //step83: Log out the parse data to see what it looks like
+  // console.log(words); //step83: Log out the parse data to see what it looks like
   const wordArray = words.split("\n"); //step84: Use the fetched data to create an array of words 
   const randomWord = Math.floor(Math.random() * wordArray.length); //step85: Grab a random word from the array of words
   word = wordArray[randomWord].trim(); //step86:  Reassign the random word to the previously declared word variable (Make sure to eliminate space around the word!)

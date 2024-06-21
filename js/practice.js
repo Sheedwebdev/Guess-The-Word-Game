@@ -34,11 +34,14 @@ placeholders(word);
 guessButton.addEventListener("click", function (e) {
   e.preventDefault();
   const capturedInput = input.value;
-  console.log(capturedInput);
+  // console.log(capturedInput);
   input.value = "";
 
   //Extention of Part4
-  inputValidation(capturedInput);
+  const validGuess = inputValidation(capturedInput);
+  if (validGuess) {
+    makeGuess(capturedInput);
+  }
 });
 
 
@@ -56,27 +59,89 @@ const inputValidation = function (capturedInput) {
   }
 };
 // Part5: What happens when the player makes a valid input/guess?
+const makeGuess = function (capturedInput) {
+  capturedInput = capturedInput.toUpperCase();
+  if (guessedLetters.includes(capturedInput)) {
+    responseMessage.innerText = "You must have dementia, you have already made that guess.";
+  } else {
+    guessedLetters.push(capturedInput);
+    // console.log(guessedLetters);
+    //Extention of Part8:
+    countRemaining(capturedInput);
 
+    //Extention of Part6:
+    displayGuesses();
 
+    //Extention of Part7:
+    wordInProgress(guessedLetters);
+  }
+};
 
 
 // Part6: Display the guessed letters
+const displayGuesses = function () {
+  guess.innerHTML = "";
+  for (const letter of guessedLetters) {
+    const li = document.createElement("li");
+    li.innerText = letter;
+    guess.append(li);
+    // console.log(guess);
+  }
+};
 
 
 // Part7: Update the word in progress
-
+const wordInProgress = function (guessedLetters) {
+  const upperWord = word.toUpperCase();
+  const wordArray = upperWord.split("")
+  const displayWord = [];
+  for (const letter of wordArray) {
+    if (guessedLetters.includes(letter.toUpperCase())) {
+      displayWord.push(letter);
+    } else {
+      displayWord.push("?");
+    }
+  }
+  // console.log(displayWord)
+  progress.innerText = displayWord.join("");
+  
+  //Extention of Part9
+  winner();
+};
 
 
 // Part8: Count the guesses remaining
-
+const countRemaining = function (capturedInput) {
+  // remainingCount = 8;
+  const upperWord = word.toUpperCase();
+  console.log(upperWord);
+  console.log(capturedInput);
+  if (!upperWord.includes(capturedInput)) {
+    remainingCount -= 1;
+    remainingSpan.innerText = `${remainingCount} guesses`;
+    responseMessage.innerText = `That is incorrect.  ${capturedInput} is not in the word.`;
+  } else {
+    responseMessage.innerText = `That is correct!!!  ${capturedInput} is in the word!!!`;
+  }
+  if (remainingCount === 1) {
+    remainingSpan.innerText = `${remainingCount} guess`;
+  } else {
+    remainingSpan.innerText = `${remainingCount} guesses`;
+  }
+  if (remainingCount === 0) {
+    responseMessage.innerHTML = `Sorry, the game is over.  The word is <span class="highlight">${upperWord}.</span>`;
+  }
+};
 
 
 // Part9: Let the player know that they won!
-
-
-
-
-
+const winner = function () {
+  const upperWord = word.toUpperCase();
+  if (upperWord === progress.innerText) {
+    responseMessage.innerHTML = `<span class="highlight">${upperWord} is the word!  You must have psychic powers!!!</span>`;
+    responseMessage.classList.add("win");
+  }
+};
 // Part11: Give the player the option to start over and play again
 
 
