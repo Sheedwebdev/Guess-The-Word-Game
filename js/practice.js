@@ -13,9 +13,22 @@ let word = "enahora";
 let remainingCount = 8;
 let guessedLetters = [];
 
+
 // Part10: Randomly pick from a word from a list of 800 words 
 // API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
-
+const getNewWord = async function () {
+  const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  // console.log(getData);
+  const getWords = await getData.text();
+  // console.log(getWords);
+  const arrayOfWords = getWords.split("\n");
+  // console.log(arrayOfWords);
+  const randomIndex = Math.floor(Math.random()*arrayOfWords.length);
+  word = arrayOfWords[randomIndex];
+  console.log(word);
+  placeholders(word);
+};
+getNewWord();
 
 
 // Part2: Add placeholders for each letter in the word
@@ -114,8 +127,8 @@ const wordInProgress = function (guessedLetters) {
 const countRemaining = function (capturedInput) {
   // remainingCount = 8;
   const upperWord = word.toUpperCase();
-  console.log(upperWord);
-  console.log(capturedInput);
+  // console.log(upperWord);
+  // console.log(capturedInput);
   if (!upperWord.includes(capturedInput)) {
     remainingCount -= 1;
     remainingSpan.innerText = `${remainingCount} guesses`;
@@ -130,6 +143,9 @@ const countRemaining = function (capturedInput) {
   }
   if (remainingCount === 0) {
     responseMessage.innerHTML = `Sorry, the game is over.  The word is <span class="highlight">${upperWord}.</span>`;
+    
+    //Extention of Part11
+    startOverOption();
   }
 };
 
@@ -140,10 +156,35 @@ const winner = function () {
   if (upperWord === progress.innerText) {
     responseMessage.innerHTML = `<span class="highlight">${upperWord} is the word!  You must have psychic powers!!!</span>`;
     responseMessage.classList.add("win");
+
+    //Extention of Part11
+    startOverOption();
   }
 };
-// Part11: Give the player the option to start over and play again
 
+
+// Part11: Give the player the option to start over and play again
+const startOverOption = function () {
+  guessButton.classList.add("hide");
+  playAgainButton.classList.remove("hide");
+  guess.classList.add("hide");
+  remaining.classList.add("hide");
+};
 
 
 // Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function (e) {
+  e.preventDefault();
+  guessButton.classList.remove("hide");
+  playAgainButton.classList.add("hide");
+  guessedLetters = [];
+  guess.innerHTML = "";
+  guess.classList.remove("hide");
+  remainingCount = 8;
+  remainingSpan.innerText = `${remainingCount} guesses`;
+  remaining.classList.remove("hide");
+  responseMessage.classList.remove("win");
+  responseMessage.innerText = "";
+  //Extention of Part10
+  getNewWord();
+});
