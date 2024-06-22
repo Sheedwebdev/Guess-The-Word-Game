@@ -36,11 +36,16 @@ placeholders(word);
 guessButton.addEventListener("click", function (e) {
   e.preventDefault();
   const capturedValue = input.value;
-  console.log(capturedValue);
+  // console.log(capturedValue);
   input.value = "";
 
   //Extention of Part4
-  validGuess(capturedValue);
+  const goodGuess = validGuess(capturedValue);
+
+  //Extention of Part5
+  if (goodGuess) {
+    makeGuess(capturedValue);
+  }
 });
 
 
@@ -59,12 +64,32 @@ const validGuess = function (capturedValue) {
 };
 
 
-// Part5: What happens when the player makes a valid input/guess?
+// Part5: What happens when the player makes a valid guess?
+const makeGuess = function (capturedValue) {
+  const upperGuess = capturedValue.toUpperCase();
+  if (guessedLetters.includes(upperGuess)) {
+    responseMessage.innerText = "Make sure to look at the displayed guesses!  It shows you that you have already made that guess."
+  } else {
+    guessedLetters.push(upperGuess);
+  }
+  console.log(guessedLetters);
+
+  //Extention of Part6
+  displayedGuesses();
+};
 
 
 
 // Part6: Display the guessed letters
-
+const displayedGuesses = function () {
+  guess.innerHTML = "";
+  for (const letter of guessedLetters) {
+    const li = document.createElement("li");
+    li.innerText = letter;
+    guess.append(li);
+  }
+  console.log(guess);
+};
 
 
 // Part7: Update the word in progress
