@@ -66,19 +66,26 @@ const validGuess = function (capturedValue) {
 
 // Part5: What happens when the player makes a valid guess?
 const makeGuess = function (capturedValue) {
-  const upperGuess = capturedValue.toUpperCase();
-  if (guessedLetters.includes(upperGuess)) {
+  // const upperGuess = capturedValue.toUpperCase();
+  capturedValue = capturedValue.toUpperCase();
+  if (guessedLetters.includes(capturedValue)) {
     responseMessage.innerText = "Make sure to look at the displayed guesses!  It shows you that you have already made that guess."
   } else {
-    guessedLetters.push(upperGuess);
+    guessedLetters.push(capturedValue);
   }
-  console.log(guessedLetters);
+  // console.log(guessedLetters);
+
+  //Extention of Part8
+
 
   //Extention of Part6
   displayedGuesses();
+
+   //Extention of Part7
+   wordInProgress(guessedLetters);
 };
 
-
+ 
 
 // Part6: Display the guessed letters
 const displayedGuesses = function () {
@@ -88,12 +95,27 @@ const displayedGuesses = function () {
     li.innerText = letter;
     guess.append(li);
   }
-  console.log(guess);
+  // console.log(guess);
 };
 
 
 // Part7: Update the word in progress
-
+const wordInProgress = function (guessedLetters) {
+  const upperWord = word.toUpperCase();
+  const wordArray = upperWord.split("");
+  const updatedWord = [];
+  for (const letter of wordArray) {
+    if (guessedLetters.includes(letter)) {
+      updatedWord.push(letter.toUpperCase());
+    } else {
+      updatedWord.push("?");
+    }
+  }
+  progress.innerText = updatedWord.join("");
+  console.log(upperWord);
+  console.log(guessedLetters);
+  console.log(updatedWord);
+};
 
 
 // Part8: Count the guesses remaining
