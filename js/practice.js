@@ -112,9 +112,9 @@ const wordInProgress = function (guessedLetters) {
     }
   }
   progress.innerText = updatedWord.join("");
-  // console.log(upperWord);
-  // console.log(guessedLetters);
-  // console.log(updatedWord);
+
+  //Extention of Part9
+  winner();
 };
 
 
@@ -145,7 +145,13 @@ const remainingGuesses = function (capturedValue) {
 
 
 // Part9: Let the player know that they won!
-
+const winner = function () {
+  const upperWord = word.toUpperCase();
+  if (upperWord === progress.innerText) {
+    responseMessage.innerHTML = `<p class="highlight">Great job!!! ${upperWord} is the secret word!!! You must have psychic powers!!!</p>;`
+    responseMessage.classList.add("win");
+  }
+};
 
 
 // Part11: Give the player the option to start over and play again
