@@ -76,7 +76,7 @@ const makeGuess = function (capturedValue) {
   // console.log(guessedLetters);
 
   //Extention of Part8
-
+  remainingGuesses(capturedValue);
 
   //Extention of Part6
   displayedGuesses();
@@ -112,14 +112,36 @@ const wordInProgress = function (guessedLetters) {
     }
   }
   progress.innerText = updatedWord.join("");
-  console.log(upperWord);
-  console.log(guessedLetters);
-  console.log(updatedWord);
+  // console.log(upperWord);
+  // console.log(guessedLetters);
+  // console.log(updatedWord);
 };
 
 
 // Part8: Count the guesses remaining
-
+const remainingGuesses = function (capturedValue) {
+  const upperWord = word.toUpperCase();
+  const upperGuess = capturedValue.toUpperCase();
+  console.log(upperWord);
+  console.log(upperGuess);
+  // if (!upperWord.match(capturedValue)) {
+  if (!upperWord.includes(capturedValue)) {
+    remainingCount -= 1;
+    remainingSpan.innerText = `${remainingCount} guesses`;
+    responseMessage.innerText = `Incorrect! The letter ${upperGuess} is not in the word!`;
+  } else {
+    responseMessage.innerText = `Correct!!! The letter ${upperGuess} is in the word!`;
+  }
+  
+  
+  if (remainingCount === 0) {
+    responseMessage.innerHTML = `Sorry, the game is over. The word is <span class="highlight">${upperWord}</span>.`;
+  } else if (remainingCount === 1) {
+    remainingSpan.innerText = `${remainingCount} guess`;
+  } else {
+    remainingSpan.innerText = `${remainingCount} guesses`;
+  }
+};
 
 
 // Part9: Let the player know that they won!
