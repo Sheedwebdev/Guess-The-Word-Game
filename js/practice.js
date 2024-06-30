@@ -31,14 +31,16 @@ placeholders(word);
 
 
 // Part3: Capture the input when the guess button is clicked
-	guessButton.addEventListener("click", function (e) {
-		e.preventDefault();
-		const capturedValue = input.value;
-		// console.log(capturedValue);
-		//Extention of Part4
-		guessValidation(capturedValue);
-    //Extention of Part5
+guessButton.addEventListener("click", function (e) {
+	e.preventDefault();
+	const capturedValue = input.value;
+	// console.log(capturedValue);
+	//Extention of Part4
+	const goodGuess = guessValidation(capturedValue);
+  //Extention of Part5
+	if (goodGuess) {
 		makeValidGuess(capturedValue);
+	}
     input.value = "";
 	});
 
@@ -73,7 +75,6 @@ const makeValidGuess = function (capturedValue) {
 
 	//Extention of Part7
 	updatedWord(guessedLetters);
-
 };
 
 
