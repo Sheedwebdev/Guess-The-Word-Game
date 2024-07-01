@@ -69,7 +69,7 @@ const makeValidGuess = function (capturedValue) {
 	if (guessedLetters.includes(capturedValue)) {
 		responseMessage.innerText = "Look at your displayed guesses. It shows you already made that guess.";
 	} else {
-		guessedLetters.push(capturedValue);
+		guessedLetters.push(capturedValue.toUpperCase());
 		// console.log(guessedLetters);
 	}
   //Extention of Part8
@@ -80,6 +80,8 @@ const makeValidGuess = function (capturedValue) {
 
 	//Extention of Part7
 	updatedWord(guessedLetters);
+
+	// console.log(guessedLetters);
 };
 
 
@@ -100,6 +102,7 @@ const updatedWord = function (guessedLetters) {
   const displayedWord = [];
 	const upperWord = word.toUpperCase();
 	const wordArray = upperWord.split("");
+	// console.log(wordArray);
 
 	for (const letter of wordArray) {
 		if (guessedLetters.includes(letter)) {
@@ -109,6 +112,8 @@ const updatedWord = function (guessedLetters) {
 		}
 	}
 	progress.innerText = displayedWord.join("");
+	// console.log(guessedLetters);
+
   //Extention of Part9
 	winner();
 };  
@@ -142,10 +147,13 @@ const countRemaining = function (capturedValue) {
 // Part9: Let the player know that they won!
 const winner = function () {
 	const upperWord = word.toUpperCase();
+	console.log(upperWord);
+	console.log(progress);
 
 	if (upperWord === progress.innerText) {
-		responseMessage.innerHTML = `<p class="highlight>You win!!! The word is ${upperWord}! You are on fire!!!</p>`
-	  responseMessage.classList.add("win");
+		responseMessage.classList.add("win");
+		responseMessage.innerHTML = `<p class="highlight>You win!!! The word is ${upperWord}! You are on fire!!!</p>`;
+	    console.log(responseMessage);
 		//Extention of Part11
 		startOverOption();
 	}
