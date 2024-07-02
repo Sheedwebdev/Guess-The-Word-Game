@@ -16,8 +16,18 @@ let remainingGuesses = 8;
 
 
 // Part10: Randomly pick a word from a list of 823 words 
-// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
-
+// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
+const getNewWord = async function () {
+  const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const getWords = await getData.text();
+  const wordsArray = getWords.split("\n");
+  const randomIndex = Math.floor(Math.random() * wordsArray.length);
+  word = wordsArray[randomIndex].trim();
+  console.log(word);
+  //Extention of Part2
+  placeholders(word);
+};
+getNewWord();
 
 // Part2: Add placeholders for each letter in the word
 const placeholders = function (word) {
@@ -27,7 +37,7 @@ const placeholders = function (word) {
 	}
   progress.innerText = placeholdersArray.join("");
 }; 
-placeholders(word);
+
 
 
 // Part3: Capture the input when the guess button is clicked
@@ -106,7 +116,7 @@ const updatedWord = function (guessedLetters) {
 
 	for (const letter of wordArray) {
 		if (guessedLetters.includes(letter)) {
-			displayedWord.push(letter.toUpperCase());
+			displayedWord.push(letter);
 		} else {
 			displayedWord.push("$");
 		}
@@ -147,13 +157,13 @@ const countRemaining = function (capturedValue) {
 // Part9: Let the player know that they won!
 const winner = function () {
 	const upperWord = word.toUpperCase();
-	console.log(upperWord);
-	console.log(progress);
+	// console.log(upperWord);
+	// console.log(progress);
 
 	if (upperWord === progress.innerText) {
 		responseMessage.classList.add("win");
-		responseMessage.innerHTML = `<p class="highlight>You win!!! The word is ${upperWord}! You are on fire!!!</p>`;
-	    console.log(responseMessage);
+		responseMessage.innerHTML = `<p class="highlight">You win!!! The word is ${upperWord}! You are on fire!!!</p>`;
+	    // console.log(responseMessage);
 		//Extention of Part11
 		startOverOption();
 	}
