@@ -99,8 +99,8 @@ const wordInProgress = function (storedGuesses) {
   const updatedWord = [];
   const upperWord = word.toUpperCase();
   
-  for (const letter of storedGuesses) {
-    if (upperWord.includes(letter)) {
+  for (const letter of upperWord) {
+    if (storedGuesses.includes(letter)) {
       updatedWord.push(letter);
     } else {
       updatedWord.push("#");
