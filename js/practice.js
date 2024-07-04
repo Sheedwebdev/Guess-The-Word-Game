@@ -10,7 +10,7 @@ const input = document.querySelector(".letter");
 const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
 
-let word = "Malinda";
+let word = "malinda";
 let storedGuesses = [];
 let remainingGuesses = 8;
 
@@ -41,8 +41,6 @@ guessButton.addEventListener("click", function (e) {
 		//Extention of Part5
 		updatePage(capturedValue);
 	}
-
-
 	input.value = "";
 });
 
@@ -65,12 +63,12 @@ const validGuess = function (capturedValue) {
 
 // Part5: What happens when the player makes a valid guess?
 const updatePage = function (capturedValue) {
-  const guess = capturedValue.toUpperCase();
+  const upperGuess = capturedValue.toUpperCase();
 	
-	if (storedGuesses.includes(guess)) {
+	if (storedGuesses.includes(upperGuess)) {
 		responseMessage.innerText = "You have already made that guess!";
 	} else {
-		storedGuesses.push(guess);
+		storedGuesses.push(upperGuess);
 	}
 	
 
@@ -81,7 +79,7 @@ countRemainingGuesses();
 diplayGuesses();
 
 //Extenton of Part7
-wordInProgress();
+wordInProgress(storedGuesses);
 };
 
 
@@ -97,9 +95,22 @@ const diplayGuesses = function () {
 
 
 // Part7: Update the word in progress
-const wordInProgress = function () {};
+const wordInProgress = function (storedGuesses) {
+  const updatedWord = [];
+  const upperWord = word.toUpperCase();
+  
+  for (const letter of storedGuesses) {
+    if (upperWord.includes(letter)) {
+      updatedWord.push(letter);
+    } else {
+      updatedWord.push("#");
+    }
+    progress.innerText = updatedWord.join("");
+  }
+  console.log(updatedWord);
+};
 
- 
+
 // Part8: Count the guesses remaining
 const countRemainingGuesses = function () {};
 
