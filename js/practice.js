@@ -180,3 +180,18 @@ const startOverOption = function () {
 
 
 // Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function () {
+	playAgainButton.classList.add("hide");
+	guessButton.classList.remove("hide");
+	guess.innerHTML = "";
+	guessedLetters = [];
+	guess.classList.remove("hide");
+	console.log(guess);
+	remainingGuesses = 8;
+	remainingSpan.innerText = `${remainingGuesses} guesses`;
+	remaining.classList.remove("hide");
+	responseMessage.classList.remove("win");
+	responseMessage.innerText = "";
+	//Extention of Part10
+  getNewWord()
+});
