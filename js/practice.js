@@ -1,4 +1,4 @@
-//Reps Completed: 5
+//Reps Completed: 6
 
 //Part1: Global Variables
 const responseMessage = document.querySelector(".message");
@@ -17,7 +17,18 @@ let remainingGuesses = 8;
 
 // Part10: Randomly pick a word from a list of 823 words 
 // API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
+const randomSecretWord = async function () {
+  const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const getWords = await getData.text();
+  const arrayOfWords = getWords.split("\n")
+  const randomIndex = Math.floor(Math.random()*arrayOfWords.length);
 
+  secretWord = arrayOfWords[randomIndex];
+  console.log(secretWord);
+  //Extention of Part2
+  placeholders(secretWord);
+};
+randomSecretWord();
 
 // Part2: Add placeholders for each letter in the word
 const placeholders = function (secretWord) {
@@ -69,17 +80,13 @@ const renderUpdates = function (capturedGuess) {
     responseMessage.innerText = "You already made that guess!";
   } else {
     guessedLetters.push(upperGuess);
-    responseMessage.innerText = "";
-  }
-  
-  //Extention of Part 8
+     //Extention of Part8
   renderRemainingGuesses(capturedGuess);
-
-  //Extention of Part 6
+  //Extention of Part6
   renderGuesses();
-     
-  //Extention of Part 7
+  //Extention of Part7
   renderWordInProgress(guessedLetters);
+  }
 };
 
 
@@ -108,6 +115,8 @@ const renderWordInProgress = function (guessedLetters) {
     }
   }
   progress.innerText = progressArray.join("");
+  //Extention of Part9
+  winner();
 };
 
 
@@ -128,6 +137,8 @@ const renderRemainingGuesses = function (capturedGuess) {
     remainingSpan.innerText = `${remainingGuesses} guess`;
   } else if (remainingGuesses === 0) {
     responseMessage.innerHTML = `You ran out of guesses!  The word is <span class="highlight">${upperWord}</span>.`
+    //Extention of Part11
+    startOverOption();
   } else {
     remainingSpan.innerText = `${remainingGuesses} guesses`;
   }
@@ -135,17 +146,40 @@ const renderRemainingGuesses = function (capturedGuess) {
 
 
 // Part9: Let the player know that they won!
+const winner = function () {
+  const upperWord = secretWord.toUpperCase();
 
+  if (upperWord === progress.innerText) {
+    responseMessage.innerHTML = `<p class="highlight">You Win!!! You are on fire!!!</p>`
+    responseMessage.classList.add("win");
+    //Extention of Part11
+    startOverOption();
+  }
+};
 
 
 // Part11: Give the player the option to start over and play again
-
+const startOverOption = function () {
+  playAgainButton.classList.remove("hide");
+  guessButton.classList.add("hide");
+  guess.classList.add("hide");
+  remaining.classList.add("hide");
+};
 
 
 // Part12: Add a click event to the play again button
-
-
-  
-
-
-
+playAgainButton.addEventListener("click", function(e) {
+  e.preventDefault();
+  playAgainButton.classList.add("hide");
+  guessButton.classList.remove("hide");
+  guess.innerHTML = "";
+  guessedLetters = [];
+  guess.classList.remove("hide");
+  remainingGuesses = 8;
+  remainingSpan.innerText = `${remainingGuesses} guesses`;
+  remaining.classList.remove("hide");
+  responseMessage.innerText = "";
+  responseMessage.classList.remove("win");
+  //Extention of Part10
+  randomSecretWord();
+});
