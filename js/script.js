@@ -10,7 +10,7 @@ const input = document.querySelector(".letter");
 const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
 
-let secretWord = "shaheedah";
+let secretWord = "Sandra";
 let guessedLetters = [];
 let remainingGuesses = 8;
 
