@@ -1,4 +1,4 @@
-//Reps Completed: 6
+//Reps Completed: 7
 
 //Part1: Global Variables
 const responseMessage = document.querySelector(".message");
@@ -22,33 +22,27 @@ const randomSecret = async function () {
 	const arrayOfSecrets = getSecrets.split("\n");
 	const randomIndex = Math.floor(Math.random() * arrayOfSecrets.length)
 	secret = arrayOfSecrets[randomIndex];
-	console.log(secret);
+	placeholder(secret);
 }
-
-
-
+randomSecret();
 
 
 // Part2: Add placeholders for each letter in the word
 const placeholder = function (secret) {
-	randomSecret();
 	const placeholdersArray = [];
 	for (const letter of secret) {
 		placeholdersArray.push("?");
 	}
 	progress.innerText = placeholdersArray.join("");
 };
-placeholder(secret);
 
 
 // Part3: Capture the input when the guess button is clicked
 guessButton.addEventListener("click", function (e) {
 	e.preventDefault();
 	const capturedValue = input.value;
-	//Extention of Part4
 	const goodGuess = validGuess(capturedValue);
 	if (goodGuess) {
-		//Extention of Part5
 		renderUpdates(capturedValue);
 	}
 	input.value = "";
@@ -110,6 +104,7 @@ const renderWordInProgress = function (storedGuesses) {
 	winner();
 }
 
+
 // Part8: Count the guesses remaining
 const renderRemainingGuesses = function (upperGuess) {
 	const upperSecret = secret.toUpperCase();
@@ -163,6 +158,7 @@ playAgainButton.addEventListener("click", function (e) {
 	countRemaining = 8;
 	remainingSpan.innerText = `${countRemaining} guesses`;
 	remaining.classList.remove("hide");
-	//Extention of Part10
+	responseMessage.innerText = "";
+	responseMessage.classList.remove("win");
 	randomSecret();
 });
