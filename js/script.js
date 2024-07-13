@@ -16,10 +16,22 @@ let countRemaining = 8;
 
 // Part10: Randomly pick a word from a list of 823 words 
 // API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
+const randomSecret = async function () {
+	const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+	const getSecrets = await getData.text();
+	const arrayOfSecrets = getSecrets.split("\n");
+	const randomIndex = Math.floor(Math.random() * arrayOfSecrets.length)
+	secret = arrayOfSecrets[randomIndex];
+	console.log(secret);
+}
+
+
+
 
 
 // Part2: Add placeholders for each letter in the word
 const placeholder = function (secret) {
+	randomSecret();
 	const placeholdersArray = [];
 	for (const letter of secret) {
 		placeholdersArray.push("?");
@@ -113,6 +125,7 @@ const renderRemainingGuesses = function (upperGuess) {
 		remainingSpan.innerText = `${countRemaining} guess`;
 	} else if (countRemaining === 0) {
 		responseMessage.innerHTML = `Game over. The secret word is <span class="highlight">${upperSecret}</span>`;
+		playAgainOption();
 	} else {
 		remainingSpan.innerText = `${countRemaining} guesses`;
 	}
@@ -125,13 +138,31 @@ const winner = function () {
 	if (upperSecret === progress.innerText) {
 		responseMessage.innerHTML = `<p class="highlight">You Win!!! You are on fire!!!</p>`;
 		responseMessage.classList.add("win");
+		playAgainOption();
 	}
 }
 
 
 // Part11: Give the player the option to start over and play again
-
+const playAgainOption = function () {
+	playAgainButton.classList.remove("hide");
+	guessButton.classList.add("hide");
+	guess.classList.add("hide");	
+	remaining.classList.add("hide");
+};
 
 
 // Part12: Add a click event to the play again button
-
+playAgainButton.addEventListener("click", function (e) {
+	e.preventDefault();
+	playAgainButton.classList.add("hide");
+	guessButton.classList.remove("hide");
+	guess.innerHTML = "";
+	storedGuesses = [];
+	guess.classList.remove("hide");	
+	countRemaining = 8;
+	remainingSpan.innerText = `${countRemaining} guesses`;
+	remaining.classList.remove("hide");
+	//Extention of Part10
+	randomSecret();
+});
