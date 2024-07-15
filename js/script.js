@@ -9,156 +9,91 @@ const guess = document.querySelector(".guessed-letters");
 const input = document.querySelector(".letter");
 const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
-let secret = "viola";
+let word = "magnolia";
 let storedGuesses = [];
-let countRemaining = 8;
+let remainingCount = 8;
 
 
 // Part10: Randomly pick a word from a list of 823 words 
 // API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
-const randomSecret = async function () {
-	const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
-	const getSecrets = await getData.text();
-	const arrayOfSecrets = getSecrets.split("\n");
-	const randomIndex = Math.floor(Math.random() * arrayOfSecrets.length)
-	secret = arrayOfSecrets[randomIndex];
-	placeholder(secret);
-}
-randomSecret();
+
 
 
 // Part2: Add placeholders for each letter in the word
-const placeholder = function (secret) {
-	const placeholdersArray = [];
-	for (const letter of secret) {
-		placeholdersArray.push("?");
-	}
-	progress.innerText = placeholdersArray.join("");
+const placeholders = function (word) {
+  const placeholdersArray = [];
+  for (const letter of word) {
+    placeholdersArray.push("*");
+  }
+  progress.innerText = placeholdersArray.join("");
 };
+placeholders(word);
 
 
-// Part3: Capture the input when the guess button is clicked
+// Part3: Capture the input value when the guess button is clicked
 guessButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	const capturedValue = input.value;
-	const goodGuess = validGuess(capturedValue);
-	if (goodGuess) {
-		renderUpdates(capturedValue);
-	}
-	input.value = "";
+  e.preventDefault();
+  const capturedValue = input.value;
+  const goodGuess = guessValidation(capturedValue);
+  if (goodGuess) {
+    renderUpdates(capturedValue);
+  }
+  input.value = "";
 });
 
 
 // Part4: Validate the player's guess
-const validGuess = function (capturedValue) {
-	const onlyLetters = /[a-zA-Z]/;
-	if (capturedValue.length === 0) {
-		responseMessage.innerText = "Please make a guess first!";
-	} else if (capturedValue.length > 1) {
-		responseMessage.innerText = "Please enter only one guess at a time!";
-	} else if (!capturedValue.match(onlyLetters)) {
-		responseMessage.innerText = "Please enter only letters from A to Z!";
-	} else {
-		return capturedValue;
-	}
+const guessValidation = function (capturedValue) {
+  const acceptedGuesses = /[a-zA-Z]/;
+  if (capturedValue.length === 0) {
+    responseMessage.innerText = "Please enter a value first!";
+  } else if (capturedValue.length > 1) {
+    responseMessage.innerText = "Please only enter one value at a time!";
+  } else if (!capturedValue.match(acceptedGuesses)) {
+    responseMessage.innerText = "Please only enter letters from A to Z!";
+  } else {
+    return capturedValue;
+  }
 };
 
 
 // Part5: What happens when the player makes a valid guess?
 const renderUpdates = function (capturedValue) {
-	const upperGuess = capturedValue.toUpperCase();
-	if (storedGuesses.includes(upperGuess)) {
-		responseMessage.innerText = "You have already made that guess. Try another guess!"
-	} else {
-		storedGuesses.push(upperGuess)
-		renderRemainingGuesses(upperGuess);
-		renderGuesses();
-		renderWordInProgress(storedGuesses);
-	}
+  if (storedGuesses.includes(capturedValue)) {
+    responseMessage.innerText = "You have already made that guess! Try a different one!";
+  } else {
+    storedGuesses.push(capturedValue);
+  }
+  //Update 1. Word In Progress area 2. Remaining Count area 3. Displayed letters area
+  renderGuesses();
 };
 
 
 // Part6: Display the guessed letters
 const renderGuesses = function () {
-	guess.innerHTML = "";
-	for (const letter of storedGuesses) {
-		const li = document.createElement("li");
-		li.innerText = letter;
-		guess.append(li);
-	}
+  guess.innerHTML = "";
+  for (const letter of storedGuesses) {
+    const li = document.createElement("li");
+    li.innerText = letter.toUpperCase();
+    guess.append(li);
+  }
 };
 
 
 // Part7: Update the word in progress
-const renderWordInProgress = function (storedGuesses) {
-	const upperSecret = secret.toUpperCase();
-	const updatedWord = [];
-	for (const letter of upperSecret) {
-		if (storedGuesses.includes(letter)) {
-			updatedWord.push(letter);
-	  } else {
-			updatedWord.push("?");
-		}
-	};
-	progress.innerText = updatedWord.join("");
-	winner();
-}
+
 
 
 // Part8: Count the guesses remaining
-const renderRemainingGuesses = function (upperGuess) {
-	const upperSecret = secret.toUpperCase();
-	const secretArray = upperSecret.split("");
-	if (!secretArray.includes(upperGuess)) {
-			responseMessage.innerText = `Incorrect. The letter ${upperGuess} is not in the word.`;
-			countRemaining -= 1;
-			remainingSpan.innerText = `${countRemaining} guesses`;
-		} else {
-			responseMessage.innerText = `Correct!!! The letter ${upperGuess} is in the word!`;
-		}
-	if (countRemaining === 1) {
-		remainingSpan.innerText = `${countRemaining} guess`;
-	} else if (countRemaining === 0) {
-		responseMessage.innerHTML = `Game over. The secret word is <span class="highlight">${upperSecret}</span>`;
-		playAgainOption();
-	} else {
-		remainingSpan.innerText = `${countRemaining} guesses`;
-	}
-};
+
 
 
 // Part9: Let the player know that they won!
-const winner = function () {
-	const upperSecret = secret.toUpperCase();
-	if (upperSecret === progress.innerText) {
-		responseMessage.innerHTML = `<p class="highlight">You Win!!! You are on fire!!!</p>`;
-		responseMessage.classList.add("win");
-		playAgainOption();
-	}
-}
+
 
 
 // Part11: Give the player the option to start over and play again
-const playAgainOption = function () {
-	playAgainButton.classList.remove("hide");
-	guessButton.classList.add("hide");
-	guess.classList.add("hide");	
-	remaining.classList.add("hide");
-};
+
 
 
 // Part12: Add a click event to the play again button
-playAgainButton.addEventListener("click", function (e) {
-	e.preventDefault();
-	playAgainButton.classList.add("hide");
-	guessButton.classList.remove("hide");
-	guess.innerHTML = "";
-	storedGuesses = [];
-	guess.classList.remove("hide");	
-	countRemaining = 8;
-	remainingSpan.innerText = `${countRemaining} guesses`;
-	remaining.classList.remove("hide");
-	responseMessage.innerText = "";
-	responseMessage.classList.remove("win");
-	randomSecret();
-});
