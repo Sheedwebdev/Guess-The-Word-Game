@@ -37,8 +37,8 @@ guessButton.addEventListener("click", function (e) {
   const goodGuess = guessValidation(capturedValue);
   if (goodGuess) {
     renderUpdates(capturedValue);
+    input.value = "";
   }
-  input.value = "";
 });
 
 
@@ -62,10 +62,11 @@ const renderUpdates = function (capturedValue) {
   if (storedGuesses.includes(capturedValue)) {
     responseMessage.innerText = "You have already made that guess! Try a different one!";
   } else {
-    storedGuesses.push(capturedValue);
+    storedGuesses.push(capturedValue.toUpperCase());
   }
   //Update 1. Word In Progress area 2. Remaining Count area 3. Displayed letters area
   renderGuesses();
+  renderWordInProgess(storedGuesses);
 };
 
 
@@ -81,11 +82,31 @@ const renderGuesses = function () {
 
 
 // Part7: Update the word in progress
-
+const renderWordInProgess = function (storedGuesses) {
+  const wordInProgress = [];
+  const upperWord = word.toUpperCase();
+  const wordArray = upperWord.split("");
+  for (const letter of wordArray) {
+    if (storedGuesses.includes(letter)) {
+      wordInProgress.push(letter);
+    } else {
+      wordInProgress.push("*");
+    }
+  }
+  progress.innerText = wordInProgress.join("");
+};
 
 
 // Part8: Count the guesses remaining
+const renderRemainingGuesses = function (capturedValue) {
 
+
+
+
+
+
+  
+};
 
 
 // Part9: Let the player know that they won!
