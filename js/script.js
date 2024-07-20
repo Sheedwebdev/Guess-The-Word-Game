@@ -16,6 +16,16 @@ let countRemaining = 8;
 
 // Part10: Randomly pick a word from a list of 823 words 
 // API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
+const randomWord = async function () {
+  const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
+  const getWords = await getData.text();
+  const arrayOfWords = getWords.split("\n");
+  const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
+  word = arrayOfWords[randomIndex];
+  console.log(word);
+  placeholders(word);
+};
+randomWord();
 
 
 // Part2: Add placeholders for each letter in the word
@@ -113,6 +123,7 @@ const showRemainingGuesses = function (capturedValue) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
     responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>`;
+    startOverOption();
   } else {
     remainingSpan.innerText = `${countRemaining} guesses`;
   }
@@ -123,14 +134,33 @@ const showRemainingGuesses = function (capturedValue) {
 const winner = function () {
   const upperWord = word.toUpperCase();
   if (progress.innerText === upperWord) {
-    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!</p>`
+    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!</p>`;
     responseMessage.classList.add("win");
+    startOverOption();
   }
 };
 
 
 // Part11: Give the player the option to start over and play again
-
+const startOverOption = function () {
+  playAgainButton.classList.remove("hide");
+  guessButton.classList.add("hide");
+  guess.classList.add("hide");
+  remaining.classList.add("hide");
+};
 
 
 // Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function () {
+  playAgainButton.classList.add("hide");
+  guessButton.classList.remove("hide");
+  guess.innerHTML = "";
+  guess.classList.remove("hide");
+  countRemaining = 8;
+  remainingSpan.innerText = `${countRemaining} guesses`
+  remaining.classList.remove("hide");
+  storedGuesses = [];
+  responseMessage.innerText = "";
+  responseMessage.classList.remove("win");
+  randomWord();
+});
