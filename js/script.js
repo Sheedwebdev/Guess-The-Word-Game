@@ -150,11 +150,18 @@ const startOverOption = function () {
 
 // Part12: Add a click event to the play again button
 playAgainButton.addEventListener("click", function () {
+  const upperWord = word.toUpperCase();
+  if (progress.innerText === upperWord) {
+    countRemaining = 8;
+    countRemaining -= 1;
+  } else if (countRemaining === 0) {
+    countRemaining = 8;
+    countRemaining += 1;
+  }
   playAgainButton.classList.add("hide");
   guessButton.classList.remove("hide");
   guess.innerHTML = "";
   guess.classList.remove("hide");
-  countRemaining = 8;
   remainingSpan.innerText = `${countRemaining} guesses`
   remaining.classList.remove("hide");
   storedGuesses = [];
