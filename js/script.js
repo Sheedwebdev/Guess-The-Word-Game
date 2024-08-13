@@ -9,7 +9,10 @@ const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
 let word = "enahora";
 let storedGuesses = [];
-let countRemaining = 8;
+// let countRemaining = 8;
+const counts = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+let countRemaining = counts[5];
+
 
 
 // Part10: Randomly pick a word from a list of 823 words 
@@ -154,10 +157,27 @@ playAgainButton.addEventListener("click", function () {
   if (progress.innerText === upperWord) {
     countRemaining = 8;
     countRemaining -= 1;
-  } else if (countRemaining === 0) {
+  } else {
     countRemaining = 8;
     countRemaining += 1;
   }
+
+  //If the player is on a winning streak
+  // const upperWord = word.toUpperCase();
+  // for (var i = 0; i < 9; i++) {
+  //   var initialCount = counts[i];
+  //   if (progress.text === upperWord) {
+  //     initialCount = counts[i] - 1;
+  //   }
+  // }
+  //If the player is on a loosing streak
+  // for (var i = 0; i < 9; i++) {
+  //   var initialCount = counts[i];
+  //   if (countRemaining === 0) {
+  //     initialCount = counts[i] + 1;
+  //   }
+  // }
+
   playAgainButton.classList.add("hide");
   guessButton.classList.remove("hide");
   guess.innerHTML = "";
