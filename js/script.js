@@ -9,10 +9,8 @@ const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
 let word = "enahora";
 let storedGuesses = [];
-// let countRemaining = 8;
-const counts = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-let countRemaining = counts[5];
-
+let countRemaining = 8;
+let continousCount = 8;
 
 
 // Part10: Randomly pick a word from a list of 823 words 
@@ -123,7 +121,12 @@ const showRemainingGuesses = function (capturedValue) {
   } if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>`;
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+    //McRray Austin method from Skillcrush Student Community
+    // for (continousCount = 8; continousCount <= 12; continousCount++)
+    continousCount++; 
+    countRemaining = continousCount;
     startOverOption();
   } else {
     remainingSpan.innerText = `${countRemaining} guesses`;
@@ -135,8 +138,13 @@ const showRemainingGuesses = function (capturedValue) {
 const winner = function () {
   const upperWord = word.toUpperCase();
   if (progress.innerText === upperWord) {
-    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!</p>`;
+    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!
+    <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
     responseMessage.classList.add("win");
+    //McRray Austin method from Skillcrush Student Community
+    // for (continousCount = 8; continousCount >= 3; continousCount--)
+    continousCount--;
+    countRemaining = continousCount;
     startOverOption();
   }
 };
@@ -153,31 +161,6 @@ const startOverOption = function () {
 
 // Part12: Add a click event to the play again button
 playAgainButton.addEventListener("click", function () {
-  const upperWord = word.toUpperCase();
-  if (progress.innerText === upperWord) {
-    countRemaining = 8;
-    countRemaining -= 1;
-  } else {
-    countRemaining = 8;
-    countRemaining += 1;
-  }
-
-  //If the player is on a winning streak
-  // const upperWord = word.toUpperCase();
-  // for (var i = 0; i < 9; i++) {
-  //   var initialCount = counts[i];
-  //   if (progress.text === upperWord) {
-  //     initialCount = counts[i] - 1;
-  //   }
-  // }
-  //If the player is on a loosing streak
-  // for (var i = 0; i < 9; i++) {
-  //   var initialCount = counts[i];
-  //   if (countRemaining === 0) {
-  //     initialCount = counts[i] + 1;
-  //   }
-  // }
-
   playAgainButton.classList.add("hide");
   guessButton.classList.remove("hide");
   guess.innerHTML = "";
