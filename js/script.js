@@ -10,7 +10,7 @@ const playAgainButton = document.querySelector(".play-again");
 let word = "enahora";
 let storedGuesses = [];
 let countRemaining = 8;
-let continousCount = 8;
+let continuousCount = 8;
 
 
 // Part10: Randomly pick a word from a list of 823 words 
@@ -114,23 +114,31 @@ const showRemainingGuesses = function (capturedValue) {
   const upperGuess = capturedValue.toUpperCase();
   if(!upperWord.includes(upperGuess)) {
     responseMessage.innerText = `Incorrect guess! The letter ${upperGuess} is not in the word.`;
-    countRemaining -= 1;
+    // countRemaining -= 1;
+    countRemaining--;
     remainingSpan.innerText = `${countRemaining} guesses`;
   } else {
     responseMessage.innerText = `Correct guess!!! You are on fire!!!`;
-  } if (countRemaining === 1) {
+  } 
+
+  if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
     responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>. 
     <br>If you play again, we'll make it a little easier with more guesses to start with.`;
-    //McRray Austin method from Skillcrush Student Community
-    // for (continousCount = 8; continousCount <= 12; continousCount++)
-    continousCount++; 
-    countRemaining = continousCount;
+    continuousCount++; 
+    countRemaining = continuousCount;
     startOverOption();
   } else {
     remainingSpan.innerText = `${countRemaining} guesses`;
   }
+
+  if (continuousCount > 12) {
+    continuousCount = 12;
+    countRemaining = continuousCount;
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>. 
+    <br>You've reached the lowest level of difficulty! Take your time!`;
+  } 
 };
 
 
@@ -141,11 +149,16 @@ const winner = function () {
     responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!
     <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
     responseMessage.classList.add("win");
-    //McRray Austin method from Skillcrush Student Community
-    // for (continousCount = 8; continousCount >= 3; continousCount--)
-    continousCount--;
-    countRemaining = continousCount;
+    continuousCount--;
+    countRemaining = continuousCount;
     startOverOption();
+  } 
+
+  if (continuousCount < 3) {
+    continuousCount = 3;
+    countRemaining = continuousCount;
+    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!<br>
+    You've reached the highest level of difficulty! Great Job!</p>`;
   }
 };
 
