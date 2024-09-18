@@ -22,6 +22,7 @@ body {
   color: #f5b880;
 }
 
+
 .logo {
   width: 70%;
   max-width: 484px;
@@ -114,6 +115,8 @@ input:focus {
   border: 4px solid #28bdbd;
 }
 
+.light-mode,
+.dark-mode,
 .guess,
 .play-again {
   padding: 1em 3em;
