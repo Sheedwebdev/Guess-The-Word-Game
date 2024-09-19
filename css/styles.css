@@ -11,16 +11,21 @@ body {
   font-style: normal;
   font-size: 20px;
   line-height: 150%;
-  /* background-color: #dff6f6; */
-  /* Dark Mode Background Color */
   background-color: #323641;
   background-image: url("../img/bg.png");
   background-size: 800px;
   background-repeat: repeat;
-  /* color: #305050; */
-  /* Dark Mode Font Color */
-  color: #f5b880;
+  color: #ffffff
+  /* color: #f5b880; */
 }
+
+.light {
+  color: #305050;
+  background-color: #dff6f6; 
+}
+
+
+
 
 
 .logo {
@@ -54,7 +59,13 @@ h1 {
   display: none;
 }
 
-.highlight {
+.highlight-lightmode {
+  padding: 0.25em;
+  background: #ffe2d6;
+  font-size: 1em;
+}
+
+.highlight-darkmode {
   padding: 0.25em;
   background: #ffe2d6;
   font-size: 1em;
@@ -69,9 +80,14 @@ h1 {
   letter-spacing: 15px;
   /* color: #28bdbd; */
   /* Dark Mode Font Colors */
-  color: #f5b880;
+  color: #ffffff;
   font-size: 30px;
 }
+
+.word-in-progress-lightmode {
+  color: #323641;
+}
+
 
 .guessed-letters {
   padding: 0;
@@ -115,15 +131,39 @@ input:focus {
   border: 4px solid #28bdbd;
 }
 
-.light-mode,
-.dark-mode,
 .guess,
 .play-again {
   padding: 1em 3em;
   border-radius: 50px;
   margin-top: 1em;
+  color: #ff8d5c;
+  background: #fff;
+  font-size: 1em;
+  align-self: center;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.dark-mode {
+  padding: 1em;
+  border-radius: 50px;
+  margin-top: 1em;
   color: #fff;
   background: #ff8d5c;
+  font-size: 1em;
+  align-self: center;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.light-mode {
+  padding: 1em;
+  border-radius: 50px;
+  margin-top: 1em;
+  color: #ff8d5c;
+  background: #fff;
   font-size: 1em;
   align-self: center;
   outline: none;

@@ -9,6 +9,7 @@ const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
 const lightMode = document.querySelector(".light-mode");
 const darkMode = document.querySelector(".dark-mode");
+const body = document.querySelector("body");
 let word = "enahora";
 let storedGuesses = [];
 let countRemaining = 8;
@@ -127,7 +128,7 @@ const showRemainingGuesses = function (capturedValue) {
   if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>. 
+    responseMessage.innerHTML = `The game is over! The secret word is <span>${upperWord}</span>. 
     <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     continuousCount++; 
     countRemaining = continuousCount;
@@ -149,9 +150,9 @@ const showRemainingGuesses = function (capturedValue) {
 const winner = function () {
   const upperWord = word.toUpperCase();
   if (progress.innerText === upperWord) {
-    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!
+    responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!
     <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
-    responseMessage.classList.add("win");
+    // responseMessage.classList.add("win");
     continuousCount--;
     countRemaining = continuousCount;
     startOverOption();
@@ -193,6 +194,18 @@ playAgainButton.addEventListener("click", function () {
 // Part13: Change the mode to light mode
 lightMode.addEventListener("click", function (e) {
   e.preventDefault();
-  
-  
+  lightMode.classList.add("hide");
+  darkMode.classList.remove("hide");
+  body.classList.add("light");
+  progress.classList.add("word-in-progress-lightmode");
+});
+
+
+// Part14: Change the mode back to dark mode
+darkMode.addEventListener("click", function (e) {
+  e.preventDefault();
+  darkMode.classList.add("hide");
+  lightMode.classList.remove("hide");
+  body.classList.remove("light");
+  progress.classList.remove("word-in-progress-lightmode");
 });
