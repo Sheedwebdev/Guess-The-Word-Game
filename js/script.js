@@ -10,6 +10,7 @@ const playAgainButton = document.querySelector(".play-again");
 const lightMode = document.querySelector(".light-mode");
 const darkMode = document.querySelector(".dark-mode");
 const body = document.querySelector("body");
+
 let word = "enahora";
 let storedGuesses = [];
 let countRemaining = 8;
@@ -128,7 +129,7 @@ const showRemainingGuesses = function (capturedValue) {
   if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is <span>${upperWord}</span>. 
+    responseMessage.innerHTML = `The game is over! The secret word is ${upperWord}. 
     <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     continuousCount++; 
     countRemaining = continuousCount;
@@ -140,7 +141,7 @@ const showRemainingGuesses = function (capturedValue) {
   if (continuousCount > 12) {
     continuousCount = 12;
     countRemaining = continuousCount;
-    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight">${upperWord}</span>. 
+    responseMessage.innerHTML = `The game is over! The secret word is ${upperWord}. 
     <br>You've reached the lowest level of difficulty! Take your time!`;
   } 
 };
@@ -152,16 +153,16 @@ const winner = function () {
   if (progress.innerText === upperWord) {
     responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!
     <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
-    // responseMessage.classList.add("win");
+    responseMessage.classList.add("win-dark");
     continuousCount--;
     countRemaining = continuousCount;
     startOverOption();
   } 
-
+  
   if (continuousCount < 3) {
     continuousCount = 3;
     countRemaining = continuousCount;
-    responseMessage.innerHTML =  `<p class="highlight">You Win!!! Your lexicon is lit!!!<br>
+    responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!<br>
     You've reached the highest level of difficulty! Great Job!</p>`;
   }
 };
@@ -186,7 +187,9 @@ playAgainButton.addEventListener("click", function () {
   remaining.classList.remove("hide");
   storedGuesses = [];
   responseMessage.innerText = "";
-  responseMessage.classList.remove("win");
+  responseMessage.classList.remove("win-dark");
+  responseMessage.classList.remove("highlight-light");
+  responseMessage.classList.remove("highlight-dark");
   randomWord();
 });
 
@@ -198,14 +201,17 @@ lightMode.addEventListener("click", function (e) {
   darkMode.classList.remove("hide");
   body.classList.add("light");
   progress.classList.add("word-in-progress-lightmode");
+  guessButton.classList.add("guess-light");
+  playAgainButton.classList.add("play-again-light");
 });
-
 
 // Part14: Change the mode back to dark mode
 darkMode.addEventListener("click", function (e) {
   e.preventDefault();
   darkMode.classList.add("hide");
   lightMode.classList.remove("hide");
+  guessButton.classList.remove("guess-light");
+  playAgainButton.classList.remove("play-again-light");
   body.classList.remove("light");
   progress.classList.remove("word-in-progress-lightmode");
 });

@@ -59,15 +59,15 @@ h1 {
   display: none;
 }
 
-.highlight-lightmode {
+.highlight-light {
   padding: 0.25em;
   background: #ffe2d6;
   font-size: 1em;
 }
 
-.highlight-darkmode {
+.highlight-dark {
   padding: 0.25em;
-  background: #ffe2d6;
+  background: black;
   font-size: 1em;
 }
 
@@ -145,6 +145,12 @@ input:focus {
   cursor: pointer;
 }
 
+.guess-light, 
+.play-again-light  {
+  color: #fff;
+  background: #ff8d5c;
+}
+
 .dark-mode {
   padding: 1em;
   border-radius: 50px;
@@ -171,6 +177,7 @@ input:focus {
   cursor: pointer;
 }
 
+
 .guess:active,
 .play-again:active,
 .guess:focus,
@@ -184,9 +191,16 @@ input:focus {
 }
 
 /* animatied background */
-.win {
+.win-dark {
   padding: 0 1em;
   background: linear-gradient(-45deg, #ff9d64, #f5620c);
+  background-size: 400% 400%;
+  animation: gradient 2s ease infinite;
+}
+
+.win-light {
+  padding: 0 1em;
+  background: #fff;
   background-size: 400% 400%;
   animation: gradient 2s ease infinite;
 }
