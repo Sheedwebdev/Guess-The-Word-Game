@@ -1,5 +1,6 @@
 //Part1: Global Variables
 const responseMessage = document.querySelector(".message");
+const responseMessageSpan = document.querySelector(".message span");
 const progress = document.querySelector(".word-in-progress");
 const remaining = document.querySelector(".remaining");
 const remainingSpan = document.querySelector(".remaining span");
@@ -129,7 +130,7 @@ const showRemainingGuesses = function (capturedValue) {
   if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is ${upperWord}. 
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
     <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     continuousCount++; 
     countRemaining = continuousCount;
@@ -153,7 +154,11 @@ const winner = function () {
   if (progress.innerText === upperWord) {
     responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!
     <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
-    responseMessage.classList.add("win-dark");
+    if (darkMode.classList.contains("hide")) {
+      responseMessage.classList.add("win-dark");
+    } else {
+      responseMessage.classList.add("win-light");
+    }
     continuousCount--;
     countRemaining = continuousCount;
     startOverOption();
@@ -188,8 +193,9 @@ playAgainButton.addEventListener("click", function () {
   storedGuesses = [];
   responseMessage.innerText = "";
   responseMessage.classList.remove("win-dark");
-  responseMessage.classList.remove("highlight-light");
-  responseMessage.classList.remove("highlight-dark");
+  responseMessage.classList.remove("win-light");
+  // responseMessage.classList.remove("highlight-light");
+  // responseMessage.classList.remove("highlight-dark");
   randomWord();
 });
 
@@ -203,6 +209,10 @@ lightMode.addEventListener("click", function (e) {
   progress.classList.add("word-in-progress-lightmode");
   guessButton.classList.add("guess-light");
   playAgainButton.classList.add("play-again-light");
+  if (responseMessage.classList.contains("win-dark")) {
+    responseMessage.classList.remove("win-dark");
+    responseMessage.classList.add("win-light");
+  }
 });
 
 // Part14: Change the mode back to dark mode
@@ -214,4 +224,8 @@ darkMode.addEventListener("click", function (e) {
   playAgainButton.classList.remove("play-again-light");
   body.classList.remove("light");
   progress.classList.remove("word-in-progress-lightmode");
+  if (responseMessage.classList.contains("win-light")) {
+    responseMessage.classList.remove("win-light");
+    responseMessage.classList.add("win-dark");
+  }
 });
