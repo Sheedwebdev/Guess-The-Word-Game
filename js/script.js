@@ -1,6 +1,5 @@
 //Part1: Global Variables
 const responseMessage = document.querySelector(".message");
-const responseMessageSpan = document.querySelector(".message span");
 const progress = document.querySelector(".word-in-progress");
 const remaining = document.querySelector(".remaining");
 const remainingSpan = document.querySelector(".remaining span");
@@ -130,12 +129,12 @@ const showRemainingGuesses = function (capturedValue) {
   if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is <span>${upperWord}</span>. 
-    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     if (darkMode.classList.contains("hide")) {
-      responseMessageSpan.classList.add("highlight-dark");
+      responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     } else {
-      responseMessageSpan.classList.add("highlight-light");
+      responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-light">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
     }
     continuousCount++; 
     countRemaining = continuousCount;
@@ -218,6 +217,10 @@ lightMode.addEventListener("click", function (e) {
     responseMessage.classList.remove("win-dark");
     responseMessage.classList.add("win-light");
   }
+  if (countRemaining === 0) {
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-light">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+  }
 });
 
 // Part14: Change the mode back to dark mode
@@ -232,5 +235,9 @@ darkMode.addEventListener("click", function (e) {
   if (responseMessage.classList.contains("win-light")) {
     responseMessage.classList.remove("win-light");
     responseMessage.classList.add("win-dark");
+  }
+  if (countRemaining === 0) {
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
   }
 });
