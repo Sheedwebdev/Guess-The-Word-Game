@@ -130,8 +130,13 @@ const showRemainingGuesses = function (capturedValue) {
   if (countRemaining === 1) {
     remainingSpan.innerText = `${countRemaining} guess`;
   } else if (countRemaining === 0) {
-    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
+    responseMessage.innerHTML = `The game is over! The secret word is <span>${upperWord}</span>. 
     <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+    if (darkMode.classList.contains("hide")) {
+      responseMessageSpan.classList.add("highlight-dark");
+    } else {
+      responseMessageSpan.classList.add("highlight-light");
+    }
     continuousCount++; 
     countRemaining = continuousCount;
     startOverOption();
