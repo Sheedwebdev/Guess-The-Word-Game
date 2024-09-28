@@ -42,7 +42,6 @@ const placeholders = function (word) {
 placeholders(word);
 
 
-
 // Part3: Capture the input value when the guess button is clicked
 guessButton.addEventListener("click", function (e) {
   e.preventDefault();
