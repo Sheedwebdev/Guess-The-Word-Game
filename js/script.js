@@ -1,3 +1,4 @@
+//Part1: Global Variables
 const responseMessage = document.querySelector(".message");
 const progress = document.querySelector(".word-in-progress");
 const remaining = document.querySelector(".remaining");
@@ -6,73 +7,89 @@ const guess = document.querySelector(".guessed-letters");
 const input = document.querySelector(".letter");
 const guessButton = document.querySelector(".guess");
 const playAgainButton = document.querySelector(".play-again");
-let secretWord = "shaheedah";
-let guessedLetters = [];
-let remainingGuesses = 8;
+const lightMode = document.querySelector(".light-mode");
+const darkMode = document.querySelector(".dark-mode");
+const body = document.querySelector("body");
+
+let word = "enahora";
+let storedGuesses = [];
+let countRemaining = 8;
+let continuousCount = 8;
 
 
-const randomSecretWord = async function () {
+// Part10: Randomly pick a word from a list of 823 words 
+// API Address: https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt
+const randomWord = async function () {
   const getData = await fetch("https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt");
   const getWords = await getData.text();
-  const arrayOfWords = getWords.split("\n")
-  const randomIndex = Math.floor(Math.random()*arrayOfWords.length);
-  secretWord = arrayOfWords[randomIndex];
-  placeholders(secretWord);
+  const arrayOfWords = getWords.split("\n");
+  const randomIndex = Math.floor(Math.random() * arrayOfWords.length);
+  word = arrayOfWords[randomIndex];
+  console.log(word);
+  placeholders(word);
 };
-randomSecretWord();
+randomWord();
 
 
-const placeholders = function (secretWord) {
-  const placeholderArray = [];
-  for (const letter of secretWord) {
-    placeholderArray.push("*");
+// Part2: Add placeholders for each letter in the word
+const placeholders = function (word) {
+  const placeholdersArray = [];
+  for (const letter of word) {
+    placeholdersArray.push("?")
   }
-  progress.innerText = placeholderArray.join("");
+  progress.innerText = placeholdersArray.join("");
 };
-placeholders(secretWord);
+placeholders(word);
 
 
+
+// Part3: Capture the input value when the guess button is clicked
 guessButton.addEventListener("click", function (e) {
   e.preventDefault();
-  const capturedGuess = input.value;
-  const goodGuess = validatedGuess(capturedGuess);
-  if (goodGuess) {
-    renderUpdates(capturedGuess);
+  const capturedValue = input.value;
+  const validGuess = guessValidation(capturedValue);
+  if (validGuess) {
+    showUpdates(capturedValue);
   }
   input.value = "";
-});  
+});
 
 
-const validatedGuess = function (capturedGuess) {
+// Part4: Validate the player's guess
+const guessValidation = function (capturedValue) {
+  
   const acceptedLetters = /[a-zA-Z]/;
-  if (capturedGuess.length === 0) {
-    responseMessage.innerText = "Please enter a value first!"
-  } else if (capturedGuess.length > 1) {
-    responseMessage.innerText = "Please only enter one letter at a time!"
-  } else if (!capturedGuess.match(acceptedLetters)) {
-    responseMessage.innerText = "Please only enter letters from A to Z!"
+  if (capturedValue.length === 0) {
+    responseMessage.innerText = "Please enter a value first!";
+  } else if (capturedValue.length > 1) {
+    responseMessage.innerText = "Please only enter one value at a time!";
+  } else if (!capturedValue.match(acceptedLetters)) {
+    responseMessage.innerText = "Please only enter values from A to Z!";
   } else {
-    return capturedGuess;
+    return capturedValue;
   }
 };
 
 
-const renderUpdates = function (capturedGuess) {
-	const upperGuess = capturedGuess.toUpperCase();
-  if (guessedLetters.includes(upperGuess)) {
-    responseMessage.innerText = "You already made that guess!";
+// Part5: What happens when the player makes a valid guess?
+const showUpdates = function (capturedValue) {
+  const upperGuess = capturedValue.toUpperCase();
+  if (storedGuesses.includes(upperGuess)) {
+    responseMessage.innerText = "You have already made that guess! Try something else!";
   } else {
-    guessedLetters.push(upperGuess);
-    renderRemainingGuesses(capturedGuess);
-    renderGuesses();
-    renderWordInProgress(guessedLetters);
+    storedGuesses.push(upperGuess);
+    // Show updates: Display the guesses, word in progress, new remaining count
+    showRemainingGuesses(capturedValue);
+    showGuesses();
+    showWordInProgress(storedGuesses);
   }
 };
 
 
-const renderGuesses = function() {
+// Part6: Display the guessed letters
+const showGuesses = function () {
   guess.innerHTML = "";
-  for (const letter of guessedLetters) {
+  for (const letter of storedGuesses) {
     const li = document.createElement("li");
     li.innerText = letter;
     guess.append(li);
@@ -80,53 +97,87 @@ const renderGuesses = function() {
 };
 
 
-const renderWordInProgress = function (guessedLetters) {
-  const upperWord = secretWord.toUpperCase();
-  const upperWordArray = upperWord.split("");
-  const progressArray = [];
-  for (const letter of upperWordArray) {
-    if (guessedLetters.includes(letter)) {
-      progressArray.push(letter)
+// Part7: Update the word in progress
+const showWordInProgress = function (storedGuesses) {
+  const upperWord = word.toUpperCase();
+  const wordInProgress = [];
+  for (const letter of upperWord) {
+    if (storedGuesses.includes(letter)) {
+      wordInProgress.push(letter);
     } else {
-      progressArray.push("*")
+      wordInProgress.push("?");
     }
   }
-  progress.innerText = progressArray.join("");
+  progress.innerText = wordInProgress.join("");
   winner();
 };
 
 
-const renderRemainingGuesses = function (capturedGuess) {
-  const upperWord = secretWord.toUpperCase();
-  const upperGuess = capturedGuess.toUpperCase();
-  if (!upperWord.includes(upperGuess)) {
-    responseMessage.innerText = `Incorrect! The letter ${upperGuess} is not in the word.`;
-    remainingGuesses -= 1;
-    remainingSpan.innerText = `${remainingGuesses} guesses`;
+// Part8: Count the guesses remaining
+const showRemainingGuesses = function (capturedValue) {
+  const upperWord = word.toUpperCase();
+  const upperGuess = capturedValue.toUpperCase();
+  if(!upperWord.includes(upperGuess)) {
+    responseMessage.innerText = `Incorrect guess! The letter ${upperGuess} is not in the word.`;
+    // countRemaining -= 1;
+    countRemaining--;
+    remainingSpan.innerText = `${countRemaining} guesses`;
   } else {
-    responseMessage.innerText = `Correct!!! The letter ${upperGuess} is in the word!!!`;
-  }
-  if (remainingGuesses === 1) {
-    remainingSpan.innerText = `${remainingGuesses} guess`;
-  } else if (remainingGuesses === 0) {
-    responseMessage.innerHTML = `You ran out of guesses!  The word is <span class="highlight">${upperWord}</span>.`;
+    responseMessage.innerText = `Correct guess!!! You are on fire!!!`;
+  } 
+
+  if (countRemaining === 1) {
+    remainingSpan.innerText = `${countRemaining} guess`;
+  } else if (countRemaining === 0) {
+    if (darkMode.classList.contains("hide")) {
+      responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+    } else {
+      responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-light">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+    }
+    continuousCount++; 
+    countRemaining = continuousCount;
     startOverOption();
   } else {
-    remainingSpan.innerText = `${remainingGuesses} guesses`;
+    remainingSpan.innerText = `${countRemaining} guesses`;
   }
+
+  if (continuousCount > 12) {
+    continuousCount = 12;
+    countRemaining = continuousCount;
+    responseMessage.innerHTML = `The game is over! The secret word is ${upperWord}. 
+    <br>You've reached the lowest level of difficulty! Take your time!`;
+  } 
 };
 
 
+// Part9: Let the player know that they won!
 const winner = function () {
-  const upperWord = secretWord.toUpperCase();
-  if (upperWord === progress.innerText) {
-    responseMessage.innerHTML = `<p class="highlight">You Win!!! You are on fire!!!</p>`;
-    responseMessage.classList.add("win");
+  const upperWord = word.toUpperCase();
+  if (progress.innerText === upperWord) {
+    responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!
+    <br>If you play again, we'll make it a little harder with less guesses to start with.</p>`;
+    if (darkMode.classList.contains("hide")) {
+      responseMessage.classList.add("win-dark");
+    } else {
+      responseMessage.classList.add("win-light");
+    }
+    continuousCount--;
+    countRemaining = continuousCount;
     startOverOption();
+  } 
+  
+  if (continuousCount < 3) {
+    continuousCount = 3;
+    countRemaining = continuousCount;
+    responseMessage.innerHTML =  `<p>You Win!!! Your lexicon is lit!!!<br>
+    You've reached the highest level of difficulty! Great Job!</p>`;
   }
 };
 
 
+// Part11: Give the player the option to start over and play again
 const startOverOption = function () {
   playAgainButton.classList.remove("hide");
   guessButton.classList.add("hide");
@@ -135,17 +186,58 @@ const startOverOption = function () {
 };
 
 
-playAgainButton.addEventListener("click", function(e) {
-  e.preventDefault();
+// Part12: Add a click event to the play again button
+playAgainButton.addEventListener("click", function () {
   playAgainButton.classList.add("hide");
   guessButton.classList.remove("hide");
   guess.innerHTML = "";
-  guessedLetters = [];
   guess.classList.remove("hide");
-  remainingGuesses = 8;
-  remainingSpan.innerText = `${remainingGuesses} guesses`;
+  remainingSpan.innerText = `${countRemaining} guesses`
   remaining.classList.remove("hide");
+  storedGuesses = [];
   responseMessage.innerText = "";
-  responseMessage.classList.remove("win");
-  randomSecretWord();
+  responseMessage.classList.remove("win-dark");
+  responseMessage.classList.remove("win-light");
+  // responseMessage.classList.remove("highlight-light");
+  // responseMessage.classList.remove("highlight-dark");
+  randomWord();
+});
+
+
+// Part13: Change the mode to light mode
+lightMode.addEventListener("click", function (e) {
+  e.preventDefault();
+  lightMode.classList.add("hide");
+  darkMode.classList.remove("hide");
+  body.classList.add("light");
+  progress.classList.add("word-in-progress-lightmode");
+  guessButton.classList.add("guess-light");
+  playAgainButton.classList.add("play-again-light");
+  if (responseMessage.classList.contains("win-dark")) {
+    responseMessage.classList.remove("win-dark");
+    responseMessage.classList.add("win-light");
+  }
+  if (countRemaining === 0) {
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-light">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+  }
+});
+
+// Part14: Change the mode back to dark mode
+darkMode.addEventListener("click", function (e) {
+  e.preventDefault();
+  darkMode.classList.add("hide");
+  lightMode.classList.remove("hide");
+  guessButton.classList.remove("guess-light");
+  playAgainButton.classList.remove("play-again-light");
+  body.classList.remove("light");
+  progress.classList.remove("word-in-progress-lightmode");
+  if (responseMessage.classList.contains("win-light")) {
+    responseMessage.classList.remove("win-light");
+    responseMessage.classList.add("win-dark");
+  }
+  if (countRemaining === 0) {
+    responseMessage.innerHTML = `The game is over! The secret word is <span class="highlight-dark">${upperWord}</span>. 
+    <br>If you play again, we'll make it a little easier with more guesses to start with.`;
+  }
 });
